@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and state",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "User's display name or experimental ID"
+        },
+        "current_round": {
+          "type": "number",
+          "description": "The current word set round the user is on"
+        },
+        "role": {
+          "type": "string",
+          "description": "User role, e.g., 'user' or 'admin'"
+        }
+      },
+      "required": ["name", "current_round", "role"]
+    },
+    "TestRecord": {
+      "title": "TestRecord",
+      "description": "Records of a user's memory test (immediate and delayed)",
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "round_number": {
+          "type": "number"
+        },
+        "task_type": {
+          "type": "string",
+          "enum": ["daytime", "sleep"]
+        },
+        "immediate_score": {
+          "type": "number"
+        },
+        "delayed_score": {
+          "type": "number"
+        },
+        "immediate_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "delayed_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "interval_hours": {
+          "type": "number"
+        },
+        "extra_variable": {
+          "type": "number",
+          "description": "Sleep hours or fatigue rating"
+        },
+        "is_valid": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["waiting", "completed"]
+        }
+      },
+      "required": [
+        "user_id",
+        "user_name",
+        "round_number",
+        "task_type",
+        "immediate_score",
+        "immediate_timestamp",
+        "is_valid",
+        "status"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles"
+    },
+    "/TestRecords/{recordId}": {
+      "schema": {
+        "$ref": "#/entities/TestRecord"
+      },
+      "description": "Stores all test records"
+    }
+  }
+}

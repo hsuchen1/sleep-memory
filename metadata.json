@@ -1,0 +1,5 @@
+{
+  "name": "英語單字記憶實驗",
+  "description": "國立中央大學英語單字記憶與睡眠研究實驗 App，支援 PWA 安裝至主畫面。",
+  "requestFramePermissions": []
+}

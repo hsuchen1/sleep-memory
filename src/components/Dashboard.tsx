@@ -1,0 +1,215 @@
+import { Sun, Moon, Download, LogOut } from 'lucide-react';
+import { UserProfile, TestRecord, TaskType } from '../types';
+import { useState, useEffect } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db, auth } from '../firebase';
+import { handleFirestoreError, OperationType } from '../utils';
+import { signOut } from 'firebase/auth';
+
+interface DashboardProps {
+  userProfile: UserProfile;
+  activeRecord: TestRecord | null;
+  onStartTask: (type: TaskType) => void;
+  onStartTest: () => void;
+  onTimeout: () => void;
+}
+
+export default function Dashboard({ userProfile, activeRecord, onStartTask, onStartTest, onTimeout }: DashboardProps) {
+  const [timeLeft, setTimeLeft] = useState<string>('');
+  const [testState, setTestState] = useState<'waiting' | 'ready' | 'timeout'>('waiting');
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [stats, setStats] = useState<{ waiting: number; timeout: number; completed: number } | null>(null);
+  
+  const adminEmails = ['dyes101184@gmail.com', 'hsuchen1@g.ncu.edu.tw'];
+  const isAdmin = userProfile.role === 'admin' || (auth.currentUser?.email && adminEmails.includes(auth.currentUser.email));
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isAdmin) {
+      const fetchStats = async () => {
+        try {
+          const q = query(collection(db, 'TestRecords'));
+          const snapshot = await getDocs(q);
+          const records = snapshot.docs.map(d => d.data() as TestRecord);
+          setStats({
+            waiting: records.filter(r => r.status === 'waiting' && r.is_valid).length,
+            timeout: records.filter(r => !r.is_valid && r.status === 'completed').length,
+            completed: records.filter(r => r.status === 'completed' && r.is_valid).length
+          });
+        } catch (error) {
+          console.error('Stats error:', error);
+        }
+      };
+      fetchStats();
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (!activeRecord) return;
+
+    const updateTimer = () => {
+      const immediateTime = new Date(activeRecord.immediate_timestamp).getTime();
+      const now = Date.now();
+      const diff11h = (immediateTime + 11 * 60 * 60 * 1000) - now;
+      const diff14h = (immediateTime + 14 * 60 * 60 * 1000) - now;
+
+      if (diff14h < 0) {
+        setTestState('timeout');
+        setTimeLeft('00:00:00');
+      } else if (diff11h <= 0) {
+        setTestState('ready');
+        setTimeLeft('00:00:00');
+      } else {
+        setTestState('waiting');
+        const h = Math.floor(diff11h / (1000 * 60 * 60));
+        const m = Math.floor((diff11h % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff11h % (1000 * 60)) / 1000);
+        setTimeLeft(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+    return () => clearInterval(interval);
+  }, [activeRecord]);
+
+  const handleExport = async () => {
+    try {
+      const q = query(collection(db, 'TestRecords'), where('is_valid', '==', true));
+      const snapshot = await getDocs(q);
+      const records = snapshot.docs.map(doc => doc.data() as TestRecord);
+      
+      if (records.length === 0) {
+        alert('沒有可匯出的數據');
+        return;
+      }
+
+      const headers = ['user_id', 'user_name', 'round_number', 'task_type', 'immediate_score', 'delayed_score', 'immediate_timestamp', 'delayed_timestamp', 'interval_hours', 'extra_variable', 'is_valid'];
+      const csvContent = [
+        headers.join(','),
+        ...records.map(r => headers.map(h => r[h as keyof TestRecord]).join(','))
+      ].join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'experiment_data.csv';
+      link.click();
+    } catch (error) {
+      handleFirestoreError(error, OperationType.GET, 'TestRecords');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
+      <button 
+        onClick={() => setShowLogoutConfirm(true)}
+        className="absolute top-4 left-4 flex items-center space-x-2 text-gray-400 hover:text-red-400 transition-colors bg-white px-4 py-2 rounded-full shadow-sm"
+      >
+        <LogOut className="w-5 h-5" />
+        <span className="font-bold">登出</span>
+      </button>
+
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl max-w-xs w-full text-center space-y-6 border-4 border-white">
+            <div className="text-5xl">👋</div>
+            <h3 className="text-2xl font-bold text-gray-800">確定要登出嗎？</h3>
+            <div className="flex flex-col space-y-3">
+              <button 
+                onClick={handleLogout}
+                className="w-full bg-red-400 text-white py-3 rounded-full font-bold hover:bg-red-500 transition-colors active:scale-90"
+              >
+                確定登出
+              </button>
+              <button 
+                onClick={() => setShowLogoutConfirm(false)}
+                className="w-full bg-gray-100 text-gray-500 py-3 rounded-full font-bold hover:bg-gray-200 transition-colors active:scale-90"
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className="absolute top-4 right-4 flex flex-col items-end space-y-2">
+          <button 
+            onClick={handleExport}
+            className="flex items-center space-x-2 text-gray-400 hover:text-[#FFB4A2] transition-colors bg-white px-4 py-2 rounded-full shadow-sm"
+          >
+            <Download className="w-5 h-5" />
+            <span className="font-bold">匯出數據 (CSV)</span>
+          </button>
+          {stats && (
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl shadow-sm border border-gray-100 text-[10px] grid grid-cols-3 gap-2 font-bold">
+              <div className="text-blue-400">⏳ 等待: {stats.waiting}</div>
+              <div className="text-red-400">⚠️ 逾期: {stats.timeout}</div>
+              <div className="text-green-400">✅ 完成: {stats.completed}</div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="max-w-md w-full text-center space-y-10">
+        <div className="bg-white/60 backdrop-blur-md p-8 rounded-[3rem] shadow-xl border-4 border-white">
+          <h2 className="text-3xl font-bold text-gray-800 leading-relaxed">
+            嗨，{userProfile.name}！<br/>
+            <span className="text-[#FFB4A2]">目前進度：第 {userProfile.current_round} 回挑戰</span>
+          </h2>
+        </div>
+
+        {!activeRecord ? (
+          <div className="space-y-6">
+            <button
+              onClick={() => onStartTask('daytime')}
+              className="w-full flex items-center justify-center space-x-4 bg-[#FFF1CC] text-[#D49A00] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#FFE4A0] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
+            >
+              <span className="text-4xl">☀️</span>
+              <span className="text-2xl font-bold">白日任務</span>
+            </button>
+            <button
+              onClick={() => onStartTask('sleep')}
+              className="w-full flex items-center justify-center space-x-4 bg-[#E5E0FF] text-[#6B5B95] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#D4CEFF] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
+            >
+              <span className="text-4xl">🌙</span>
+              <span className="text-2xl font-bold">睡眠任務</span>
+            </button>
+          </div>
+        ) : testState === 'waiting' ? (
+          <div className="space-y-6 bg-white/60 backdrop-blur-md p-10 rounded-[3rem] shadow-xl border-4 border-white">
+            <div className="text-6xl mb-4">💤</div>
+            <div className="text-5xl font-mono font-bold tracking-tighter text-[#B5E2FA]">
+              {timeLeft}
+            </div>
+            <p className="text-xl text-gray-500 font-medium mt-4">
+              大腦正在存檔中...<br/>11 小時後會提醒您回來驗收！
+            </p>
+          </div>
+        ) : testState === 'ready' ? (
+          <button
+            onClick={onStartTest}
+            className="w-full bg-[#FFB4A2] text-white py-8 rounded-[3rem] shadow-xl border-4 border-white hover:bg-[#FF9F8A] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 active:scale-90 animate-pulse"
+          >
+            <span className="text-3xl font-bold">🚨 時間到！進入延遲測驗</span>
+          </button>
+        ) : (
+          <button
+            onClick={onTimeout}
+            className="w-full bg-gray-200 text-gray-500 py-8 rounded-[3rem] border-4 border-white shadow-lg hover:bg-gray-300 hover:-translate-y-1 transition-all duration-300 active:scale-90"
+          >
+            <span className="text-3xl font-bold">❌ 已超過有效測驗時間</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

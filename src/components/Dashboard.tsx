@@ -113,10 +113,19 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
       const headers = ['user_id', 'user_name', 'round_number', 'task_type', 'immediate_score', 'delayed_score', 'immediate_timestamp', 'delayed_timestamp', 'interval_hours', 'extra_variable', 'is_valid'];
       const csvContent = [
         headers.join(','),
-        ...records.map(r => headers.map(h => r[h as keyof TestRecord]).join(','))
+        ...records.map(r => headers.map(h => {
+          const val = r[h as keyof TestRecord];
+          // Escape quotes and wrap in quotes if contains comma
+          if (typeof val === 'string' && val.includes(',')) {
+            return `"${val.replace(/"/g, '""')}"`;
+          }
+          return val;
+        }).join(','))
       ].join('\n');
 
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      // Add BOM (Byte Order Mark) for UTF-8 so Excel on Windows recognizes the encoding correctly
+      const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+      const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'experiment_data.csv';

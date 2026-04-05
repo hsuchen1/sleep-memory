@@ -344,20 +344,20 @@ export default function App() {
 
       {/* FABs */}
       {appState !== 'learning' && appState !== 'testing' && appState !== 'survey' && (
-        <div className="fixed bottom-6 right-6 flex flex-col space-y-4 z-50">
+        <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 flex flex-col space-y-3 z-50">
           <button 
-            className="bg-white shadow-lg border-4 border-[#FFE4A0]/30 rounded-full py-3 px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"
+            className="bg-white/90 backdrop-blur-sm shadow-lg border-2 sm:border-4 border-[#FFE4A0]/30 rounded-full py-2 px-4 sm:py-3 sm:px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"
             onClick={() => setShowRules(true)}
           >
-            <span className="text-xl">📖</span>
-            <span className="font-bold text-gray-700">規則說明</span>
+            <span className="text-lg sm:text-xl">📖</span>
+            <span className="text-sm sm:text-base font-bold text-gray-700">規則說明</span>
           </button>
           <button 
-            className="bg-white shadow-lg border-4 border-[#FFE4A0]/30 rounded-full py-3 px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"
+            className="bg-white/90 backdrop-blur-sm shadow-lg border-2 sm:border-4 border-[#FFE4A0]/30 rounded-full py-2 px-4 sm:py-3 sm:px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"
             onClick={() => alert('聯絡信箱: hsuchen1@g.ncu.edu.tw')}
           >
-            <span className="text-xl">❓</span>
-            <span className="font-bold text-gray-700">聯絡我們</span>
+            <span className="text-lg sm:text-xl">❓</span>
+            <span className="text-sm sm:text-base font-bold text-gray-700">聯絡我們</span>
           </button>
         </div>
       )}

@@ -127,14 +127,16 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative">
-      <button 
-        onClick={() => setShowLogoutConfirm(true)}
-        className="absolute top-4 left-4 flex items-center space-x-2 text-gray-400 hover:text-red-400 transition-colors bg-white px-4 py-2 rounded-full shadow-sm"
-      >
-        <LogOut className="w-5 h-5" />
-        <span className="font-bold">登出</span>
-      </button>
+    <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 pt-24 pb-40 relative">
+      <div className="absolute top-6 left-6 z-10">
+        <button 
+          onClick={() => setShowLogoutConfirm(true)}
+          className="flex items-center space-x-2 text-gray-400 hover:text-red-400 transition-colors bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-100"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="font-bold">登出</span>
+        </button>
+      </div>
 
       {showLogoutConfirm && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
@@ -160,13 +162,13 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
       )}
 
       {isAdmin && (
-        <div className="absolute top-4 right-4 flex flex-col items-end space-y-2">
+        <div className="absolute top-6 right-6 z-10 flex flex-col items-end space-y-2">
           <button 
             onClick={handleExport}
-            className="flex items-center space-x-2 text-gray-400 hover:text-[#FFB4A2] transition-colors bg-white px-4 py-2 rounded-full shadow-sm"
+            className="flex items-center space-x-2 text-gray-400 hover:text-[#FFB4A2] transition-colors bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm border border-gray-100"
           >
             <Download className="w-5 h-5" />
-            <span className="font-bold">匯出數據 (CSV)</span>
+            <span className="font-bold">匯出數據</span>
           </button>
           {stats && (
             <div className="bg-white/80 backdrop-blur-sm p-3 rounded-2xl shadow-sm border border-gray-100 text-[10px] grid grid-cols-3 gap-2 font-bold">

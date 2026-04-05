@@ -354,10 +354,10 @@ export default function App() {
           </button>
           <button 
             className="bg-white shadow-lg border-4 border-[#FFE4A0]/30 rounded-full py-3 px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"
-            onClick={() => alert('研究員信箱: hsuchen1@g.ncu.edu.tw')}
+            onClick={() => alert('聯絡信箱: hsuchen1@g.ncu.edu.tw')}
           >
             <span className="text-xl">❓</span>
-            <span className="font-bold text-gray-700">聯繫研究員</span>
+            <span className="font-bold text-gray-700">聯絡我們</span>
           </button>
         </div>
       )}

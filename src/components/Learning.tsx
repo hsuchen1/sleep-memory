@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Word } from '../wordSets';
+import { auth } from '../firebase';
 
 interface LearningProps {
   words: Word[];
@@ -32,12 +33,14 @@ export default function Learning({ words, initialTimeLeft, onComplete }: Learnin
         {isUrgent && (
           <div className="text-red-500 font-bold text-xs mt-1">快要結束囉！加油！</div>
         )}
-        <button 
-          onClick={onComplete}
-          className="mt-4 text-xs bg-[#B5E2FA] hover:bg-[#9ACCE6] text-gray-800 px-4 py-2 rounded-full transition-all duration-300 hover:-translate-y-1 active:scale-90 font-bold"
-        >
-          [開發測試] 跳過學習時間
-        </button>
+        {auth.currentUser?.email === 'dyes101184@gmail.com' && (
+          <button 
+            onClick={onComplete}
+            className="mt-4 text-xs bg-[#B5E2FA] hover:bg-[#9ACCE6] text-gray-800 px-4 py-2 rounded-full transition-all duration-300 hover:-translate-y-1 active:scale-90 font-bold"
+          >
+            [開發測試] 跳過學習時間
+          </button>
+        )}
       </div>
 
       <div className="flex-1 max-w-2xl w-full mx-auto py-8">

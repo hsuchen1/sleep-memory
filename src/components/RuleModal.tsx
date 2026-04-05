@@ -6,9 +6,10 @@ interface RuleModalProps {
 
 export default function RuleModal({ onClose }: RuleModalProps) {
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-[100] backdrop-blur-sm overflow-y-auto">
-      <div className="bg-[#FFFDF8] rounded-[3rem] max-w-md w-full p-8 space-y-6 relative shadow-2xl my-8 border-4 border-white">
-        <button 
+    <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm overflow-y-auto">
+      <div className="flex min-h-full items-center justify-center p-4 py-8">
+        <div className="bg-[#FFFDF8] rounded-[3rem] max-w-md w-full p-6 sm:p-8 space-y-6 relative shadow-2xl border-4 border-white">
+          <button 
           onClick={onClose} 
           className="absolute top-6 right-6 text-gray-400 hover:text-[#FFB4A2] transition-colors bg-white p-2 rounded-full shadow-sm"
         >
@@ -91,6 +92,7 @@ export default function RuleModal({ onClose }: RuleModalProps) {
         >
           我已了解完整流程 ✨
         </button>
+      </div>
       </div>
     </div>
   );

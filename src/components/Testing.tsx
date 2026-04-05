@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Word } from '../wordSets';
+import { shuffleArray } from '../utils';
 
 interface TestingProps {
   words: Word[];
@@ -7,8 +8,20 @@ interface TestingProps {
 }
 
 export default function Testing({ words, onComplete }: TestingProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const saved = sessionStorage.getItem('testing_currentIndex');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  const [score, setScore] = useState(() => {
+    const saved = sessionStorage.getItem('testing_score');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    sessionStorage.setItem('testing_currentIndex', currentIndex.toString());
+    sessionStorage.setItem('testing_score', score.toString());
+  }, [currentIndex, score]);
 
   // Generate options for the current word
   const currentWord = words[currentIndex];
@@ -16,33 +29,43 @@ export default function Testing({ words, onComplete }: TestingProps) {
   const options = useMemo(() => {
     if (!currentWord) return [];
     
-    // Get 3 random wrong meanings with the same POS if possible
-    const wrongOptions = words
-      .filter(w => w.word !== currentWord.word)
-      // Try to match POS, but if not enough, just take any
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
-      .map(w => w.meaning);
+    // 1. Find other words with the same POS
+    let samePosWords = words.filter(w => w.word !== currentWord.word && w.pos === currentWord.pos);
+    
+    // 2. If not enough, fill with other POS
+    if (samePosWords.length < 3) {
+      const otherPosWords = words.filter(w => w.word !== currentWord.word && w.pos !== currentWord.pos);
+      samePosWords = [...samePosWords, ...otherPosWords];
+    }
+
+    // 3. Use Fisher-Yates shuffle to pick 3 wrong options
+    const wrongOptions = shuffleArray(samePosWords).slice(0, 3).map(w => w.meaning);
       
     const allOptions = [...wrongOptions, currentWord.meaning];
-    // Shuffle
-    allOptions.sort(() => 0.5 - Math.random());
-    
-    return allOptions;
+    // Shuffle all options
+    return shuffleArray(allOptions);
   }, [currentWord, words]);
 
   const handleSelect = (selectedMeaning: string | null) => {
-    if (selectedMeaning === currentWord.meaning) {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+
+    const isCorrect = selectedMeaning === currentWord.meaning;
+    if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    if (currentIndex < words.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-    } else {
-      // Pass score to parent, but add 1 if this last one was correct
-      const finalScore = score + (selectedMeaning === currentWord.meaning ? 1 : 0);
-      onComplete(finalScore);
-    }
+    setTimeout(() => {
+      if (currentIndex < words.length - 1) {
+        setCurrentIndex(prev => prev + 1);
+        setIsTransitioning(false);
+      } else {
+        sessionStorage.removeItem('testing_currentIndex');
+        sessionStorage.removeItem('testing_score');
+        const finalScore = score + (isCorrect ? 1 : 0);
+        onComplete(finalScore);
+      }
+    }, 150);
   };
 
   if (!currentWord) return null;
@@ -62,7 +85,10 @@ export default function Testing({ words, onComplete }: TestingProps) {
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center max-w-md w-full mx-auto space-y-8">
-        <div className="text-5xl md:text-6xl font-bold tracking-tight text-gray-800 text-center bg-white/60 backdrop-blur-md px-8 py-10 rounded-[3rem] shadow-lg border-4 border-white w-full">
+        <div 
+          className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-800 text-center bg-white/60 backdrop-blur-md px-4 sm:px-8 py-10 rounded-[3rem] shadow-lg border-4 border-white w-full break-words hyphens-auto"
+          lang="en"
+        >
           {currentWord.word}
         </div>
 
@@ -75,7 +101,8 @@ export default function Testing({ words, onComplete }: TestingProps) {
             <button
               key={i}
               onClick={() => handleSelect(opt)}
-              className="w-full bg-white text-gray-800 text-xl font-bold py-6 rounded-[2rem] border-4 border-[#E5E0FF] shadow-md hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 active:scale-90"
+              disabled={isTransitioning}
+              className="w-full bg-white text-gray-800 text-xl font-bold py-6 rounded-[2rem] border-4 border-[#E5E0FF] shadow-md hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
             >
               {opt}
             </button>
@@ -83,7 +110,8 @@ export default function Testing({ words, onComplete }: TestingProps) {
           
           <button
             onClick={() => handleSelect(null)}
-            className="w-full bg-gray-100 text-gray-500 text-xl font-bold py-6 rounded-[2rem] border-4 border-transparent hover:bg-gray-200 hover:-translate-y-1 transition-all duration-300 active:scale-90 mt-8"
+            disabled={isTransitioning}
+            className="w-full bg-gray-100 text-gray-500 text-xl font-bold py-6 rounded-[2rem] border-4 border-transparent hover:bg-gray-200 hover:-translate-y-1 transition-all duration-300 active:scale-90 mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
           >
             🤷 我真的忘記了
           </button>

@@ -31,6 +31,16 @@ export default function Landing() {
           </div>
         </div>
 
+        <div className="bg-[#FFF1CC] p-6 rounded-2xl border-2 border-[#FFE4A0] text-left space-y-2 shadow-sm">
+          <div className="font-bold text-[#D49A00] text-lg flex items-center space-x-2">
+            <span>🎁</span>
+            <span>完賽專屬獎勵</span>
+          </div>
+          <p className="text-[#B38000] font-medium leading-relaxed">
+            完整完成白天與睡眠累計天數任務後，系統將解鎖你的專屬<span className="font-bold text-[#D49A00]">【大腦記憶力診斷報告】</span>，得知睡眠對自己的記憶提升幾%！
+          </p>
+        </div>
+
         <button
           onClick={handleLogin}
           className="w-full bg-black text-white text-xl font-medium py-4 rounded-full hover:bg-gray-800 transition-colors active:scale-95"

@@ -20,9 +20,63 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [confirmTask, setConfirmTask] = useState<TaskType | null>(null);
   const [stats, setStats] = useState<{ waiting: number; timeout: number; completed: number } | null>(null);
+  const [report, setReport] = useState<{ sleepBonus: number } | null>(null);
+  const [userTaskCounts, setUserTaskCounts] = useState<{ daytime: number; sleep: number }>({ daytime: 0, sleep: 0 });
   
   const adminEmails = ['dyes101184@gmail.com', 'hsuchen1@g.ncu.edu.tw'];
   const isAdmin = userProfile.role === 'admin' || (auth.currentUser?.email && adminEmails.includes(auth.currentUser.email));
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!auth.currentUser) return;
+      try {
+        const q = query(
+          collection(db, 'TestRecords'),
+          where('user_id', '==', auth.currentUser.uid),
+          where('is_valid', '==', true),
+          where('status', '==', 'completed')
+        );
+        const snapshot = await getDocs(q);
+        const records = snapshot.docs.map(d => d.data() as TestRecord);
+        
+        let daytimeCount = 0;
+        let sleepCount = 0;
+        let sleepTotalImmediate = 0;
+        let sleepTotalDelayed = 0;
+        let daytimeTotalImmediate = 0;
+        let daytimeTotalDelayed = 0;
+
+        records.forEach(r => {
+          if (r.task_type === 'sleep') {
+            sleepCount++;
+            sleepTotalImmediate += r.immediate_score;
+            sleepTotalDelayed += (r.delayed_score || 0);
+          } else if (r.task_type === 'daytime') {
+            daytimeCount++;
+            daytimeTotalImmediate += r.immediate_score;
+            daytimeTotalDelayed += (r.delayed_score || 0);
+          }
+        });
+
+        setUserTaskCounts({ daytime: daytimeCount, sleep: sleepCount });
+
+        if (userProfile.current_round > 40) {
+          const sleepRetention = sleepTotalImmediate > 0 ? (sleepTotalDelayed / sleepTotalImmediate) : 0;
+          const daytimeRetention = daytimeTotalImmediate > 0 ? (daytimeTotalDelayed / daytimeTotalImmediate) : 0;
+          
+          let bonus = 0;
+          if (sleepTotalImmediate > 0 && daytimeTotalImmediate > 0) {
+            bonus = Math.round((sleepRetention - daytimeRetention) * 100);
+          }
+          
+          setReport({ sleepBonus: bonus });
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [userProfile.current_round]);
 
   const handleLogout = async () => {
     try {
@@ -193,59 +247,94 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
         <div className="bg-white/60 backdrop-blur-md p-8 rounded-[3rem] shadow-xl border-4 border-white">
           <h2 className="text-3xl font-bold text-gray-800 leading-relaxed">
             嗨，{userProfile.name}！<br/>
-            <span className="text-[#FFB4A2]">目前進度：第 {userProfile.current_round} 回挑戰</span>
+            <span className="text-[#FFB4A2]">
+              {userProfile.current_round > 40 ? '恭喜完成所有挑戰！' : `目前進度：第 ${userProfile.current_round} 回挑戰`}
+            </span>
           </h2>
+          
+          <div className="flex justify-center gap-4 mt-6">
+            <div className="bg-[#FFF1CC] text-[#D49A00] px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm">
+              <span>☀️</span> 白日已完成: {userTaskCounts.daytime}
+            </div>
+            <div className="bg-[#E5E0FF] text-[#6B5B95] px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2 shadow-sm">
+              <span>🌙</span> 睡眠已完成: {userTaskCounts.sleep}
+            </div>
+          </div>
         </div>
 
-        {!activeRecord ? (
-          <div className="space-y-6">
-            <button
-              onClick={() => setConfirmTask('daytime')}
-              className="w-full flex items-center justify-center space-x-4 bg-[#FFF1CC] text-[#D49A00] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#FFE4A0] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
-            >
-              <span className="text-4xl">☀️</span>
-              <span className="text-2xl font-bold">白日任務</span>
-            </button>
-            <button
-              onClick={() => setConfirmTask('sleep')}
-              className="w-full flex items-center justify-center space-x-4 bg-[#E5E0FF] text-[#6B5B95] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#D4CEFF] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
-            >
-              <span className="text-4xl">🌙</span>
-              <span className="text-2xl font-bold">睡眠任務</span>
-            </button>
-          </div>
-        ) : testState === 'waiting' ? (
-          <div className="space-y-6 bg-white/60 backdrop-blur-md p-10 rounded-[3rem] shadow-xl border-4 border-white">
-            <div className="text-6xl mb-4">💤</div>
-            <div className="text-5xl font-mono font-bold tracking-tighter text-[#B5E2FA]">
-              {timeLeft}
-            </div>
-            <p className="text-xl text-gray-500 font-medium mt-4">
-              大腦正在存檔中...<br/>請在 11~14 小時後回來進行測驗！
+        {userProfile.current_round > 40 && report && (
+          <div className="bg-gradient-to-br from-[#FFF1CC] to-[#FFE4A0] p-8 rounded-[3rem] shadow-xl border-4 border-white text-left space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="text-4xl mb-2">🏆</div>
+            <h3 className="text-2xl font-bold text-[#D49A00]">大腦記憶力診斷報告</h3>
+            <p className="text-[#B38000] font-medium text-lg leading-relaxed">
+              恭喜你完成了所有 40 回的記憶挑戰！
             </p>
-            
-            <button
-              onClick={handleAddToCalendar}
-              className="mt-6 w-full flex items-center justify-center space-x-2 bg-white border-2 border-[#B5E2FA] text-[#B5E2FA] py-4 rounded-2xl font-bold hover:bg-[#B5E2FA] hover:text-white transition-all duration-300 active:scale-95 shadow-sm"
-            >
-              <span>📅</span>
-              <span>設定 12 小時後的提醒</span>
-            </button>
+            <div className="bg-white/80 p-6 rounded-2xl">
+              <p className="text-gray-800 font-bold text-xl">
+                你的睡眠記憶紅利是 <span className="text-[#FFB4A2] text-3xl">{report.sleepBonus > 0 ? '+' : ''}{report.sleepBonus}%</span>！
+              </p>
+              <p className="text-gray-600 mt-2 font-medium">
+                {report.sleepBonus > 0 
+                  ? '看來你是一顆需要充足睡眠的大腦！睡眠對你的記憶鞏固非常有幫助。'
+                  : '你的大腦在白天也能保持很好的記憶力！不過充足的睡眠依然對健康很重要喔。'}
+              </p>
+            </div>
           </div>
-        ) : testState === 'ready' ? (
-          <button
-            onClick={onStartTest}
-            className="w-full bg-[#FFB4A2] text-white py-8 rounded-[3rem] shadow-xl border-4 border-white hover:bg-[#FF9F8A] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 active:scale-90 animate-pulse"
-          >
-            <span className="text-3xl font-bold">🚨 時間到！進入延遲測驗</span>
-          </button>
-        ) : (
-          <button
-            onClick={onTimeout}
-            className="w-full bg-gray-200 text-gray-500 py-8 rounded-[3rem] border-4 border-white shadow-lg hover:bg-gray-300 hover:-translate-y-1 transition-all duration-300 active:scale-90"
-          >
-            <span className="text-3xl font-bold">❌ 已超過有效測驗時間</span>
-          </button>
+        )}
+
+        {userProfile.current_round <= 40 && (
+          <>
+            {!activeRecord ? (
+              <div className="space-y-6">
+                <button
+                  onClick={() => setConfirmTask('daytime')}
+                  className="w-full flex items-center justify-center space-x-4 bg-[#FFF1CC] text-[#D49A00] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#FFE4A0] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
+                >
+                  <span className="text-4xl">☀️</span>
+                  <span className="text-2xl font-bold">白日任務</span>
+                </button>
+                <button
+                  onClick={() => setConfirmTask('sleep')}
+                  className="w-full flex items-center justify-center space-x-4 bg-[#E5E0FF] text-[#6B5B95] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#D4CEFF] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"
+                >
+                  <span className="text-4xl">🌙</span>
+                  <span className="text-2xl font-bold">睡眠任務</span>
+                </button>
+              </div>
+            ) : testState === 'waiting' ? (
+              <div className="space-y-6 bg-white/60 backdrop-blur-md p-10 rounded-[3rem] shadow-xl border-4 border-white">
+                <div className="text-6xl mb-4">💤</div>
+                <div className="text-5xl font-mono font-bold tracking-tighter text-[#B5E2FA]">
+                  {timeLeft}
+                </div>
+                <p className="text-xl text-gray-500 font-medium mt-4">
+                  大腦正在存檔中...<br/>請在 11~14 小時後回來進行測驗！
+                </p>
+                
+                <button
+                  onClick={handleAddToCalendar}
+                  className="mt-6 w-full flex items-center justify-center space-x-2 bg-white border-2 border-[#B5E2FA] text-[#B5E2FA] py-4 rounded-2xl font-bold hover:bg-[#B5E2FA] hover:text-white transition-all duration-300 active:scale-95 shadow-sm"
+                >
+                  <span>📅</span>
+                  <span>設定 12 小時後的提醒</span>
+                </button>
+              </div>
+            ) : testState === 'ready' ? (
+              <button
+                onClick={onStartTest}
+                className="w-full bg-[#FFB4A2] text-white py-8 rounded-[3rem] shadow-xl border-4 border-white hover:bg-[#FF9F8A] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 active:scale-90 animate-pulse"
+              >
+                <span className="text-3xl font-bold">🚨 時間到！進入延遲測驗</span>
+              </button>
+            ) : (
+              <button
+                onClick={onTimeout}
+                className="w-full bg-gray-200 text-gray-500 py-8 rounded-[3rem] border-4 border-white shadow-lg hover:bg-gray-300 hover:-translate-y-1 transition-all duration-300 active:scale-90"
+              >
+                <span className="text-3xl font-bold">❌ 已超過有效測驗時間</span>
+              </button>
+            )}
+          </>
         )}
       </div>
 

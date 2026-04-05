@@ -75,15 +75,25 @@ export default function RuleModal({ onClose }: RuleModalProps) {
             </div>
           </div>
           
-          <div className="flex items-start space-x-3 bg-[#FFF1CC] p-5 rounded-[2rem] border-2 border-[#FFE4A0]">
-            <span className="text-2xl shrink-0 mt-0.5">⚠️</span>
-            <div>
-              <div className="font-bold text-[#D49A00] text-sm">重要提醒</div>
-              <div className="text-xs text-[#B38000] mt-1 font-medium leading-relaxed">
-                請憑真實記憶作答，切勿截圖、作筆記或作弊，以確保實驗數據的準確性與科學價值。
+            <div className="flex items-start space-x-3 bg-[#FFF1CC] p-5 rounded-[2rem] border-2 border-[#FFE4A0]">
+              <span className="text-2xl shrink-0 mt-0.5">⚠️</span>
+              <div>
+                <div className="font-bold text-[#D49A00] text-sm">重要提醒</div>
+                <div className="text-xs text-[#B38000] mt-1 font-medium leading-relaxed">
+                  請憑真實記憶作答，切勿截圖、作筆記或作弊，以確保實驗數據的準確性與科學價值。
+                </div>
               </div>
             </div>
-          </div>
+
+            <div className="flex items-start space-x-3 bg-blue-50 p-5 rounded-[2rem] border-2 border-blue-100">
+              <span className="text-2xl shrink-0 mt-0.5">🎁</span>
+              <div>
+                <div className="font-bold text-blue-800 text-sm">完賽專屬獎勵</div>
+                <div className="text-xs text-blue-600 mt-1 font-medium leading-relaxed">
+                  完整完成白天與睡眠累計天數任務後，系統將解鎖你的專屬【大腦記憶力診斷報告】，得知睡眠對自己的記憶提升幾%！
+                </div>
+              </div>
+            </div>
         </div>
 
         <button 

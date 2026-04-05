@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, deleteField } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc, doc, updateDoc, deleteField, addDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { UserProfile, TestRecord } from '../types';
 import { handleFirestoreError, OperationType } from '../utils';
@@ -75,6 +75,53 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
     }
   };
 
+  const handleSkipToReport = async () => {
+    if (!auth.currentUser || !userProfile) return;
+    
+    setLoading(true);
+    try {
+      // 1. Set current round to 41
+      await updateDoc(doc(db, 'users', auth.currentUser.uid), {
+        current_round: 41
+      });
+
+      // 2. Add dummy data to show a positive sleep bonus
+      const dummySleepRecord: TestRecord = {
+        user_id: auth.currentUser.uid,
+        user_name: userProfile.name,
+        round_number: 1,
+        task_type: 'sleep',
+        immediate_score: 20,
+        delayed_score: 18, // 90% retention
+        immediate_timestamp: new Date().toISOString(),
+        is_valid: true,
+        status: 'completed'
+      };
+
+      const dummyDaytimeRecord: TestRecord = {
+        user_id: auth.currentUser.uid,
+        user_name: userProfile.name,
+        round_number: 2,
+        task_type: 'daytime',
+        immediate_score: 20,
+        delayed_score: 15, // 75% retention
+        immediate_timestamp: new Date().toISOString(),
+        is_valid: true,
+        status: 'completed'
+      };
+
+      await addDoc(collection(db, 'TestRecords'), dummySleepRecord);
+      await addDoc(collection(db, 'TestRecords'), dummyDaytimeRecord);
+
+      // Force a reload to fetch the new round and report
+      window.location.reload();
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, 'TestRecords/users');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="fixed bottom-6 left-6 z-50">
       {isOpen ? (
@@ -110,6 +157,15 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
             >
               <FastForward className="w-4 h-4" />
               快轉 12 小時 (延遲測驗)
+            </button>
+
+            <button 
+              onClick={handleSkipToReport}
+              disabled={loading}
+              className="w-full flex items-center gap-2 bg-purple-50 text-purple-600 hover:bg-purple-100 py-2 px-3 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+            >
+              <SkipForward className="w-4 h-4" />
+              跳至第 41 回合 (測試完賽報告)
             </button>
           </div>
           

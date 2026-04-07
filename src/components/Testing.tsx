@@ -17,6 +17,7 @@ export default function Testing({ words, onComplete }: TestingProps) {
     return saved ? parseInt(saved, 10) : 0;
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
     sessionStorage.setItem('testing_currentIndex', currentIndex.toString());
@@ -49,6 +50,7 @@ export default function Testing({ words, onComplete }: TestingProps) {
   const handleSelect = (selectedMeaning: string | null) => {
     if (isTransitioning) return;
     setIsTransitioning(true);
+    setSelectedOption(selectedMeaning);
 
     const isCorrect = selectedMeaning === currentWord.meaning;
     if (isCorrect) {
@@ -58,6 +60,7 @@ export default function Testing({ words, onComplete }: TestingProps) {
     setTimeout(() => {
       if (currentIndex < words.length - 1) {
         setCurrentIndex(prev => prev + 1);
+        setSelectedOption(undefined);
         setIsTransitioning(false);
       } else {
         sessionStorage.removeItem('testing_currentIndex');
@@ -97,21 +100,39 @@ export default function Testing({ words, onComplete }: TestingProps) {
         </div>
 
         <div className="w-full space-y-4 pt-4">
-          {options.map((opt, i) => (
-            <button
-              key={i}
-              onClick={() => handleSelect(opt)}
-              disabled={isTransitioning}
-              className="w-full bg-white text-gray-800 text-xl font-bold py-6 rounded-[2rem] border-4 border-[#E5E0FF] shadow-md hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-            >
-              {opt}
-            </button>
-          ))}
+          {options.map((opt, i) => {
+            const isSelected = selectedOption === opt;
+            const isOtherSelected = selectedOption !== undefined && selectedOption !== opt;
+            
+            return (
+              <button
+                key={`${currentIndex}-${i}`}
+                onClick={() => handleSelect(opt)}
+                disabled={isTransitioning}
+                className={`w-full text-xl font-bold py-6 rounded-[2rem] border-4 shadow-md transition-all duration-300 active:scale-90 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
+                  isSelected 
+                    ? 'bg-[#F4FAFF] text-[#B5E2FA] border-[#B5E2FA] opacity-100' 
+                    : isOtherSelected
+                      ? 'bg-white text-gray-800 border-[#E5E0FF] opacity-50'
+                      : 'bg-white text-gray-800 border-[#E5E0FF] hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg'
+                }`}
+              >
+                {opt}
+              </button>
+            );
+          })}
           
           <button
+            key={`forgot-${currentIndex}`}
             onClick={() => handleSelect(null)}
             disabled={isTransitioning}
-            className="w-full bg-gray-100 text-gray-500 text-xl font-bold py-6 rounded-[2rem] border-4 border-transparent hover:bg-gray-200 hover:-translate-y-1 transition-all duration-300 active:scale-90 mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+            className={`w-full text-xl font-bold py-6 rounded-[2rem] border-4 transition-all duration-300 active:scale-90 mt-8 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
+              selectedOption === null
+                ? 'bg-gray-200 text-gray-600 border-gray-400 opacity-100'
+                : selectedOption !== undefined
+                  ? 'bg-gray-100 text-gray-500 border-transparent opacity-50'
+                  : 'bg-gray-100 text-gray-500 border-transparent hover:bg-gray-200 hover:-translate-y-1'
+            }`}
           >
             🤷 我真的忘記了
           </button>

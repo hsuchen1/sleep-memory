@@ -68,7 +68,7 @@ export default function Testing({ words, onComplete }: TestingProps) {
         const finalScore = score + (isCorrect ? 1 : 0);
         onComplete(finalScore);
       }
-    }, 150);
+    }, 400);
   };
 
   if (!currentWord) return null;

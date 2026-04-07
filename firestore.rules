@@ -107,5 +107,10 @@ service cloud.firestore {
       allow update: if isAuthenticated() && isValidTestRecord(request.resource.data) && request.resource.data.user_id == resource.data.user_id && request.resource.data.user_id == request.auth.uid && request.resource.data.immediate_score == resource.data.immediate_score && request.resource.data.task_type == resource.data.task_type && request.resource.data.round_number == resource.data.round_number;
       allow delete: if isDocOwner() || isAdmin();
     }
+
+    match /system/config {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
   }
 }

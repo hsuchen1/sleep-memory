@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, deleteField } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, deleteField, onSnapshot } from 'firebase/firestore';
 import { auth, db } from './firebase';
 import { AppState, UserProfile, TestRecord, TaskType } from './types';
 import { getWordSet } from './wordSets';
@@ -22,12 +22,29 @@ export default function App() {
   const [activeRecord, setActiveRecord] = useState<TestRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const [showRules, setShowRules] = useState(false);
+  const [announcement, setAnnouncement] = useState<string | null>(null);
   
   // For the current session
   const [currentTaskType, setCurrentTaskType] = useState<TaskType | null>(null);
   const [immediateScore, setImmediateScore] = useState<number | null>(null);
   const [initialLearningTime, setInitialLearningTime] = useState<number>(10 * 60);
   const [showCelebration, setShowCelebration] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, 'system', 'config'), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.isActive && data.message) {
+          setAnnouncement(data.message);
+        } else {
+          setAnnouncement(null);
+        }
+      } else {
+        setAnnouncement(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const checkLearningState = async (profile: UserProfile, uid: string) => {
     if (profile.learning_start_time && profile.learning_task_type) {
@@ -290,6 +307,19 @@ export default function App() {
 
   return (
     <>
+      <AnimatePresence>
+        {announcement && (
+          <motion.div 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-0 left-0 right-0 z-[100] bg-[#D49A00] text-white font-bold text-center py-3 px-4 shadow-md"
+          >
+            📢 {announcement}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={appState}
@@ -297,7 +327,7 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="min-h-screen"
+          className={`min-h-screen ${announcement ? 'pt-12' : ''}`}
         >
           {appState === 'landing' && <Landing />}
           {appState === 'setup' && <Setup onComplete={handleSetupComplete} />}

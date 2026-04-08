@@ -8,6 +8,23 @@ interface TestingProps {
 }
 
 export default function Testing({ words, onComplete }: TestingProps) {
+  const [shuffledWords, setShuffledWords] = useState<Word[]>(() => {
+    const saved = sessionStorage.getItem('testing_shuffledWords');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.length === words.length) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse saved shuffled words", e);
+      }
+    }
+    const shuffled = shuffleArray([...words]);
+    sessionStorage.setItem('testing_shuffledWords', JSON.stringify(shuffled));
+    return shuffled;
+  });
+
   const [currentIndex, setCurrentIndex] = useState(() => {
     const saved = sessionStorage.getItem('testing_currentIndex');
     return saved ? parseInt(saved, 10) : 0;
@@ -25,7 +42,7 @@ export default function Testing({ words, onComplete }: TestingProps) {
   }, [currentIndex, score]);
 
   // Generate options for the current word
-  const currentWord = words[currentIndex];
+  const currentWord = shuffledWords[currentIndex];
   
   const options = useMemo(() => {
     if (!currentWord) return [];
@@ -58,13 +75,14 @@ export default function Testing({ words, onComplete }: TestingProps) {
     }
 
     setTimeout(() => {
-      if (currentIndex < words.length - 1) {
+      if (currentIndex < shuffledWords.length - 1) {
         setCurrentIndex(prev => prev + 1);
         setSelectedOption(undefined);
         setIsTransitioning(false);
       } else {
         sessionStorage.removeItem('testing_currentIndex');
         sessionStorage.removeItem('testing_score');
+        sessionStorage.removeItem('testing_shuffledWords');
         const finalScore = score + (isCorrect ? 1 : 0);
         onComplete(finalScore);
       }

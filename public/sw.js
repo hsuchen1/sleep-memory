@@ -1,14 +1,34 @@
-const CACHE_NAME = 'word-experiment-v1';
-const urlsToCache = ['/'];
-
 self.addEventListener('install', (event) => {
+  // Force the waiting service worker to become the active service worker.
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  // Delete all caches to ensure no old files are served
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
+    }).then(() => {
+      // Take control of all clients immediately
+      return self.clients.claim();
+    }).then(() => {
+      // Force all open clients to reload to get the fresh network version
+      return self.clients.matchAll({ type: 'window' }).then((windowClients) => {
+        windowClients.forEach((windowClient) => {
+          if ('navigate' in windowClient) {
+            windowClient.navigate(windowClient.url);
+          }
+        });
+      });
+    })
   );
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => response || fetch(event.request))
-  );
+  // Always fetch from the network to prevent caching issues
+  event.respondWith(fetch(event.request));
 });

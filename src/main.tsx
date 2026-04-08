@@ -11,9 +11,13 @@ createRoot(document.getElementById('root')!).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(
-      (registration) => console.log('SW registered: ', registration),
-      (registrationError) => console.log('SW registration failed: ', registrationError)
-    );
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister().then(
+          () => console.log('SW unregistered successfully'),
+          (err) => console.log('SW unregistration failed: ', err)
+        );
+      }
+    });
   });
 }

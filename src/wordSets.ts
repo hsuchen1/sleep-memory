@@ -6,28 +6,6 @@ export interface Word {
 
 export const wordSets: Record<number, Word[]> = {
   1: [
-    { word: "incontrovertible", meaning: "無可辯駁的 / 不容置疑的", pos: "adj" },
-    { word: "nondescript", meaning: "無特徵的", pos: "adj" },
-    { word: "objurgation", meaning: "斥責", pos: "n" },
-    { word: "malevolent", meaning: "有惡意的", pos: "adj" },
-    { word: "malingerer", meaning: "裝病者", pos: "n" },
-    { word: "ebullient", meaning: "熱情洋溢的 / 沸騰的", pos: "adj" },
-    { word: "egregious", meaning: "極壞的 / 令人震驚的", pos: "adj" },
-    { word: "petulance", meaning: "任性", pos: "n" },
-    { word: "plaintiff", meaning: "原告", pos: "n" },
-    { word: "gourmand", meaning: "貪吃者 / 饕客", pos: "n" },
-    { word: "gullible", meaning: "易受騙的", pos: "adj" },
-    { word: "brittle", meaning: "易碎的", pos: "adj" },
-    { word: "burgeon", meaning: "萌芽 / 蓬勃發展", pos: "v" },
-    { word: "polemic", meaning: "爭論", pos: "n" },
-    { word: "portent", meaning: "預兆 / 凶兆", pos: "n" },
-    { word: "fickle", meaning: "善變的", pos: "adj" },
-    { word: "fidget", meaning: "坐立不安", pos: "v" },
-    { word: "dirge", meaning: "輓歌 / 哀樂", pos: "n" },
-    { word: "edict", meaning: "法令 / 佈告", pos: "n" },
-    { word: "din", meaning: "喧囂", pos: "n" }
-  ],
-  2: [
     { word: "circumlocution", meaning: "迂迴的說法 / 累贅的陳述", pos: "n" },
     { word: "mollycoddle", meaning: "溺愛", pos: "v" },
     { word: "odoriferous", meaning: "有氣味的", pos: "adj" },
@@ -49,12 +27,12 @@ export const wordSets: Record<number, Word[]> = {
     { word: "elegy", meaning: "輓歌 / 哀歌", pos: "n" },
     { word: "yoke", meaning: "結合 / 束縛", pos: "v" }
   ],
-  3: [
+  2: [
     { word: "predisposition", meaning: "傾向", pos: "n" },
     { word: "misanthrope", meaning: "厭世者", pos: "n" },
     { word: "opprobrious", meaning: "辱罵的", pos: "adj" },
     { word: "loquacious", meaning: "多嘴的", pos: "adj" },
-    { word: "meticulous", meaning: "一絲不苟的", pos: "adj" },
+    { word: "animadvert", meaning: "批評 / 非難", pos: "v" },
     { word: "dumbfound", meaning: "使驚呆", pos: "v" },
     { word: "embellish", meaning: "裝飾", pos: "v" },
     { word: "parquetry", meaning: "鑲木地板", pos: "n" },
@@ -71,9 +49,9 @@ export const wordSets: Record<number, Word[]> = {
     { word: "ethos", meaning: "民族精神", pos: "n" },
     { word: "wily", meaning: "狡猾的 / 詭計多端的", pos: "adj" }
   ],
-  4: [
+  3: [
     { word: "quintessential", meaning: "精髓的", pos: "adj" },
-    { word: "metaphysics", meaning: "形而上學", pos: "n" },
+    { word: "anfractuous", meaning: "彎曲的 / 錯綜複雜的", pos: "adj" },
     { word: "optometrist", meaning: "驗光師", pos: "n" },
     { word: "licentious", meaning: "放蕩的 / 淫亂的", pos: "adj" },
     { word: "mettlesome", meaning: "有勇氣的", pos: "adj" },
@@ -93,13 +71,13 @@ export const wordSets: Record<number, Word[]> = {
     { word: "extol", meaning: "讚美 / 頌揚", pos: "v" },
     { word: "wile", meaning: "詭計", pos: "n" }
   ],
-  5: [
+  4: [
     { word: "anachronistic", meaning: "時代錯誤的 / 過時的", pos: "adj" },
     { word: "mellifluous", meaning: "甜美的 / 流暢的", pos: "adj" },
     { word: "ornithology", meaning: "鳥類學", pos: "n" },
     { word: "lachrymose", meaning: "愛哭的 / 催人淚下的", pos: "adj" },
     { word: "munificent", meaning: "慷慨的 / 豐厚的", pos: "adj" },
-    { word: "disparity", meaning: "差異", pos: "n" },
+    { word: "cataclysm", meaning: "大災難", pos: "n" },
     { word: "equivocal", meaning: "模稜兩可的 / 含糊的", pos: "adj" },
     { word: "ostracize", meaning: "排斥", pos: "v" },
     { word: "potentate", meaning: "統治者 / 君主", pos: "n" },
@@ -115,7 +93,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "feign", meaning: "假裝", pos: "v" },
     { word: "tout", meaning: "兜售", pos: "v" }
   ],
-  6: [
+  5: [
     { word: "conflagration", meaning: "大火 / 戰火", pos: "n" },
     { word: "malapropism", meaning: "文字誤用", pos: "n" },
     { word: "orthography", meaning: "正字法", pos: "n" },
@@ -137,12 +115,12 @@ export const wordSets: Record<number, Word[]> = {
     { word: "flout", meaning: "蔑視", pos: "v" },
     { word: "tome", meaning: "大部頭書 / 巨著", pos: "n" }
   ],
-  7: [
+  6: [
     { word: "consternation", meaning: "驚愕", pos: "n" },
     { word: "magnanimity", meaning: "寬宏大量", pos: "n" },
     { word: "panglossian", meaning: "盲目樂觀的", pos: "adj" },
     { word: "inveterate", meaning: "根深蒂固的 / 積習的", pos: "adj" },
-    { word: "omnivorous", meaning: "雜食性的", pos: "adj" },
+    { word: "autodidact", meaning: "自學者", pos: "n" },
     { word: "discomfit", meaning: "使窘迫 / 挫敗", pos: "v" },
     { word: "euphemism", meaning: "委婉語", pos: "n" },
     { word: "opportune", meaning: "適時的", pos: "adj" },
@@ -159,11 +137,11 @@ export const wordSets: Record<number, Word[]> = {
     { word: "frown", meaning: "皺眉", pos: "v" },
     { word: "rife", meaning: "充斥的 / 普遍的", pos: "adj" }
   ],
-  8: [
-    { word: "controversial", meaning: "有爭議的", pos: "adj" },
+  7: [
+    { word: "accoutrement", meaning: "裝備 / 配備", pos: "n" },
     { word: "legerdemain", meaning: "戲法 / 騙術", pos: "n" },
     { word: "perfunctory", meaning: "敷衍的", pos: "adj" },
-    { word: "intimation", meaning: "暗示 / 透露", pos: "n" },
+    { word: "bowdlerize", meaning: "刪節 / 淨化", pos: "v" },
     { word: "opalescent", meaning: "乳白的", pos: "adj" },
     { word: "diffident", meaning: "羞怯的", pos: "adj" },
     { word: "exculpate", meaning: "證明無罪", pos: "v" },
@@ -181,9 +159,9 @@ export const wordSets: Record<number, Word[]> = {
     { word: "gaffe", meaning: "失禮", pos: "n" },
     { word: "pert", meaning: "俏皮的 / 魯莽的", pos: "adj" }
   ],
-  9: [
-    { word: "dispassionate", meaning: "冷靜的", pos: "adj" },
-    { word: "irreverence", meaning: "不敬 / 輕蔑", pos: "n" },
+  8: [
+    { word: "meretricious", meaning: "俗氣的 / 華而不實的", pos: "adj" },
+    { word: "atrabilious", meaning: "憂鬱的 / 易怒的", pos: "adj" },
     { word: "precipitate", meaning: "促成", pos: "v" },
     { word: "insensible", meaning: "無知覺的", pos: "adj" },
     { word: "opprobrium", meaning: "恥辱", pos: "n" },
@@ -197,13 +175,13 @@ export const wordSets: Record<number, Word[]> = {
     { word: "conceit", meaning: "自負", pos: "n" },
     { word: "orifice", meaning: "孔", pos: "n" },
     { word: "quibble", meaning: "狡辯", pos: "v" },
-    { word: "eschew", meaning: "避開", pos: "v" },
+    { word: "hubris", meaning: "傲慢 / 狂妄自大", pos: "n" },
     { word: "frenzy", meaning: "瘋狂", pos: "n" },
     { word: "brisk", meaning: "輕快的", pos: "adj" },
     { word: "gaudy", meaning: "俗艷的", pos: "adj" },
     { word: "ogle", meaning: "拋媚眼", pos: "v" }
   ],
-  10: [
+  9: [
     { word: "grandiloquent", meaning: "誇張的 / 浮誇的", pos: "adj" },
     { word: "interregnum", meaning: "過渡期", pos: "n" },
     { word: "precipitous", meaning: "險峻的", pos: "adj" },
@@ -225,7 +203,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "gavel", meaning: "小槌", pos: "n" },
     { word: "molt", meaning: "脫毛", pos: "v" }
   ],
-  11: [
+  10: [
     { word: "idiosyncratic", meaning: "特質的 / 獨特的", pos: "adj" },
     { word: "inquisitive", meaning: "好奇的", pos: "adj" },
     { word: "prerogative", meaning: "特權", pos: "n" },
@@ -247,7 +225,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "gloat", meaning: "幸災樂禍", pos: "v" },
     { word: "moat", meaning: "護城河", pos: "n" }
   ],
-  12: [
+  11: [
     { word: "perspicacious", meaning: "敏銳的 / 有洞察力的", pos: "adj" },
     { word: "inopportune", meaning: "不合時宜的", pos: "adj" },
     { word: "prevaricate", meaning: "支吾其詞", pos: "v" },
@@ -259,7 +237,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "rotundity", meaning: "圓胖", pos: "n" },
     { word: "encroach", meaning: "侵佔", pos: "v" },
     { word: "laudable", meaning: "值得讚賞的", pos: "adj" },
-    { word: "adamant", meaning: "堅決的 / 固執的", pos: "adj" },
+    { word: "epigone", meaning: "平庸的追隨者 / 模仿者", pos: "n" },
     { word: "conduit", meaning: "導管 / 管道", pos: "n" },
     { word: "oculist", meaning: "眼科醫生", pos: "n" },
     { word: "rescind", meaning: "廢除 / 取消", pos: "v" },
@@ -269,7 +247,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "guile", meaning: "狡詐", pos: "n" },
     { word: "mace", meaning: "權杖", pos: "n" }
   ],
-  13: [
+  12: [
     { word: "preponderance", meaning: "優勢 / 多數", pos: "n" },
     { word: "inflammable", meaning: "易燃的", pos: "adj" },
     { word: "prodigality", meaning: "揮霍", pos: "n" },
@@ -291,7 +269,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "imbue", meaning: "灌輸", pos: "v" },
     { word: "lull", meaning: "使平靜", pos: "v" }
   ],
-  14: [
+  13: [
     { word: "pusillanimous", meaning: "懦弱的", pos: "adj" },
     { word: "incongruous", meaning: "不協調的", pos: "adj" },
     { word: "pulchritude", meaning: "美麗 / 標緻", pos: "n" },
@@ -313,7 +291,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "inane", meaning: "空洞的 / 愚蠢的", pos: "adj" },
     { word: "lope", meaning: "大步慢跑", pos: "v" }
   ],
-  15: [
+  14: [
     { word: "sanctimonious", meaning: "假裝虔誠的 / 偽善的", pos: "adj" },
     { word: "impregnable", meaning: "堅不可摧的", pos: "adj" },
     { word: "punctilious", meaning: "一絲不苟的 / 拘泥細節的", pos: "adj" },
@@ -324,7 +302,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "nonplused", meaning: "困惑的", pos: "adj" },
     { word: "solipsism", meaning: "唯我論", pos: "n" },
     { word: "emissary", meaning: "使者", pos: "n" },
-    { word: "linchpin", meaning: "關鍵人物 / 樞紐", pos: "n" },
+    { word: "abattoir", meaning: "屠宰場", pos: "n" },
     { word: "virtuoso", meaning: "藝術大師 / 名家", pos: "n" },
     { word: "connive", meaning: "縱容 / 默許", pos: "v" },
     { word: "obloquy", meaning: "辱罵", pos: "n" },
@@ -335,7 +313,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "inure", meaning: "使習慣於 / 生效", pos: "v" },
     { word: "loll", meaning: "懶散地坐", pos: "v" }
   ],
-  16: [
+  15: [
     { word: "surreptitious", meaning: "秘密的 / 鬼鬼祟祟的", pos: "adj" },
     { word: "impecunious", meaning: "貧窮的 / 一文不名的", pos: "adj" },
     { word: "rebarbative", meaning: "令人討厭的 / 惹人反感的", pos: "adj" },
@@ -354,10 +332,10 @@ export const wordSets: Record<number, Word[]> = {
     { word: "duress", meaning: "脅迫 / 壓力", pos: "n" },
     { word: "indict", meaning: "起訴", pos: "v" },
     { word: "zenith", meaning: "頂點", pos: "n" },
-    { word: "irate", meaning: "發怒的", pos: "adj" },
+    { word: "mulct", meaning: "罰款 / 詐取", pos: "v" },
     { word: "jest", meaning: "笑話", pos: "n" }
   ],
-  17: [
+  16: [
     { word: "adulteration", meaning: "摻雜", pos: "n" },
     { word: "hagiography", meaning: "聖徒傳記 / 捧場傳記", pos: "n" },
     { word: "redoubtable", meaning: "可怕的 / 令人敬畏的", pos: "adj" },
@@ -379,7 +357,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "jaded", meaning: "厭倦的 / 疲憊的", pos: "adj" },
     { word: "jamb", meaning: "門框", pos: "n" }
   ],
-  18: [
+  17: [
     { word: "antediluvian", meaning: "史前的 / 陳舊的", pos: "adj" },
     { word: "foreclosure", meaning: "取消抵押品贖回權", pos: "n" },
     { word: "requisition", meaning: "徵用 / 需求", pos: "n" },
@@ -395,13 +373,13 @@ export const wordSets: Record<number, Word[]> = {
     { word: "coterie", meaning: "小圈子 / 圈內人", pos: "n" },
     { word: "nascent", meaning: "初生的 / 萌芽的", pos: "adj" },
     { word: "swarthy", meaning: "黝黑的 / 黑皮膚的", pos: "adj" },
-    { word: "dispel", meaning: "驅散 / 消除", pos: "v" },
-    { word: "infuse", meaning: "注入", pos: "v" },
+    { word: "labile", meaning: "易變的 / 不穩定的", pos: "adj" },
+    { word: "farrago", meaning: "混雜物 / 大雜燴", pos: "n" },
     { word: "wheeze", meaning: "喘息", pos: "v" },
     { word: "knell", meaning: "喪鐘聲 / 凶兆", pos: "n" },
     { word: "goad", meaning: "激勵 / 唆使", pos: "v" }
   ],
-  19: [
+  18: [
     { word: "blandishment", meaning: "奉承 / 甜言蜜語", pos: "n" },
     { word: "forbearance", meaning: "忍耐 / 寬容", pos: "n" },
     { word: "susurration", meaning: "颯颯聲 / 竊竊私語", pos: "n" },
@@ -423,7 +401,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "lasso", meaning: "套索", pos: "n" },
     { word: "glib", meaning: "油腔滑調的", pos: "adj" }
   ],
-  20: [
+  19: [
     { word: "circumscribe", meaning: "限制 / 畫界線", pos: "v" },
     { word: "enfranchise", meaning: "給予選舉權 / 解放", pos: "v" },
     { word: "treacherous", meaning: "背叛的", pos: "adj" },
@@ -445,7 +423,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "leash", meaning: "皮帶", pos: "n" },
     { word: "fret", meaning: "煩躁", pos: "v" }
   ],
-  21: [
+  20: [
     { word: "commensurate", meaning: "相稱的 / 同量的", pos: "adj" },
     { word: "egalitarian", meaning: "平等主義的", pos: "adj" },
     { word: "trepidation", meaning: "恐懼", pos: "n" },
@@ -467,7 +445,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "levee", meaning: "河堤", pos: "n" },
     { word: "foil", meaning: "阻撓 / 挫敗", pos: "v" }
   ],
-  22: [
+  21: [
     { word: "conciliatory", meaning: "調解的", pos: "adj" },
     { word: "efficacious", meaning: "有效的", pos: "adj" },
     { word: "unequivocal", meaning: "明確的", pos: "adj" },
@@ -480,16 +458,16 @@ export const wordSets: Record<number, Word[]> = {
     { word: "didactic", meaning: "說教的 / 教誨的", pos: "adj" },
     { word: "minatory", meaning: "威脅的 / 恫嚇的", pos: "adj" },
     { word: "subpoena", meaning: "傳票", pos: "n" },
-    { word: "digress", meaning: "離題", pos: "v" },
+    { word: "fustian", meaning: "浮誇的言詞", pos: "n" },
     { word: "maudlin", meaning: "傷感的 / 容易流淚的", pos: "adj" },
-    { word: "trample", meaning: "踐踏", pos: "v" },
+    { word: "halcyon", meaning: "平靜的 / 太平的", pos: "adj" },
     { word: "deride", meaning: "嘲笑 / 愚弄", pos: "v" },
     { word: "leaven", meaning: "發酵劑", pos: "n" },
     { word: "vagary", meaning: "奇想", pos: "n" },
-    { word: "linen", meaning: "亞麻布", pos: "n" },
+    { word: "apothegm", meaning: "箴言 / 格言", pos: "n" },
     { word: "feud", meaning: "世仇", pos: "n" }
   ],
-  23: [
+  22: [
     { word: "confidential", meaning: "機密的", pos: "adj" },
     { word: "crepuscular", meaning: "黃昏的 / 朦朧的", pos: "adj" },
     { word: "vicissitude", meaning: "變遷 / 盛衰", pos: "n" },
@@ -511,7 +489,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "maxim", meaning: "格言 / 箴言", pos: "n" },
     { word: "fawn", meaning: "奉承 / 小鹿", pos: "v" }
   ],
-  24: [
+  23: [
     { word: "contumacious", meaning: "拒不服從的 / 頑固抗拒的", pos: "adj" },
     { word: "corroborate", meaning: "證實", pos: "v" },
     { word: "aberration", meaning: "異常 / 偏差", pos: "n" },
@@ -521,7 +499,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "fulminate", meaning: "嚴厲譴責", pos: "v" },
     { word: "leviathan", meaning: "龐然大物", pos: "n" },
     { word: "untenable", meaning: "站不住腳的", pos: "adj" },
-    { word: "defiance", meaning: "挑釁", pos: "n" },
+    { word: "badinage", meaning: "打趣 / 玩笑", pos: "n" },
     { word: "narcotic", meaning: "麻醉劑", pos: "n" },
     { word: "squander", meaning: "揮霍", pos: "v" },
     { word: "divulge", meaning: "洩露", pos: "v" },
@@ -533,7 +511,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "mirth", meaning: "歡笑", pos: "n" },
     { word: "espy", meaning: "窺見", pos: "v" }
   ],
-  25: [
+  24: [
     { word: "defenestrate", meaning: "把某人扔出窗外 / 罷免", pos: "v" },
     { word: "constituent", meaning: "成分 / 選民", pos: "n" },
     { word: "abnegation", meaning: "拒絕 / 放棄", pos: "n" },
@@ -555,7 +533,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "mores", meaning: "風俗 / 習慣", pos: "n" },
     { word: "dupe", meaning: "欺騙", pos: "v" }
   ],
-  26: [
+  25: [
     { word: "eleemosynary", meaning: "慈善的 / 施捨的", pos: "adj" },
     { word: "connoisseur", meaning: "鑑賞家 / 行家", pos: "n" },
     { word: "abstemious", meaning: "有節制的 / 簡樸的", pos: "adj" },
@@ -577,7 +555,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "odium", meaning: "憎惡", pos: "n" },
     { word: "drab", meaning: "單調的", pos: "adj" }
   ],
-  27: [
+  26: [
     { word: "embezzlement", meaning: "貪污 / 盜用", pos: "n" },
     { word: "concomitant", meaning: "伴隨的 / 同時發生的", pos: "adj" },
     { word: "aggrandize", meaning: "擴大 / 誇大", pos: "v" },
@@ -599,7 +577,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "offal", meaning: "內臟", pos: "n" },
     { word: "dour", meaning: "嚴厲的 / 陰沉的", pos: "adj" }
   ],
-  28: [
+  27: [
     { word: "epistemology", meaning: "認識論", pos: "n" },
     { word: "compunction", meaning: "內疚 / 悔恨", pos: "n" },
     { word: "amalgamate", meaning: "合併 / 混合", pos: "v" },
@@ -621,14 +599,14 @@ export const wordSets: Record<number, Word[]> = {
     { word: "paean", meaning: "讚美歌", pos: "n" },
     { word: "deft", meaning: "靈巧的", pos: "adj" }
   ],
-  29: [
+  28: [
     { word: "equivocation", meaning: "模稜兩可的話", pos: "n" },
     { word: "complaisant", meaning: "殷勤的", pos: "adj" },
     { word: "amanuensis", meaning: "抄寫員 / 秘書", pos: "n" },
     { word: "equanimity", meaning: "平靜 / 鎮定", pos: "n" },
     { word: "recompense", meaning: "酬報", pos: "v" },
     { word: "bellicose", meaning: "好戰的 / 好鬥的", pos: "adj" },
-    { word: "heterodox", meaning: "非正統的", pos: "adj" },
+    { word: "contumely", meaning: "傲慢無禮 / 侮辱", pos: "n" },
     { word: "invective", meaning: "謾罵 / 惡言", pos: "n" },
     { word: "veritable", meaning: "真正的", pos: "adj" },
     { word: "crockery", meaning: "陶器", pos: "n" },
@@ -643,7 +621,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "pique", meaning: "激起", pos: "v" },
     { word: "clot", meaning: "凝塊", pos: "n" }
   ],
-  30: [
+  29: [
     { word: "idiosyncrasy", meaning: "特質", pos: "n" },
     { word: "castigation", meaning: "嚴責 / 懲罰", pos: "n" },
     { word: "ambivalent", meaning: "矛盾的 / 猶豫不決的", pos: "adj" },
@@ -665,10 +643,10 @@ export const wordSets: Record<number, Word[]> = {
     { word: "pithy", meaning: "簡練的 / 精闢的", pos: "adj" },
     { word: "carp", meaning: "挑剔 / 吹毛求疵", pos: "v" }
   ],
-  31: [
+  30: [
     { word: "improvidence", meaning: "揮霍", pos: "n" },
     { word: "camaraderie", meaning: "同志情誼 / 友情", pos: "n" },
-    { word: "antithesis", meaning: "對立面 / 對照", pos: "n" },
+    { word: "cachinnate", meaning: "大聲笑", pos: "v" },
     { word: "effrontery", meaning: "厚顏無恥", pos: "n" },
     { word: "scurrilous", meaning: "粗俗的 / 誹謗的", pos: "adj" },
     { word: "audacious", meaning: "大膽的 / 魯莽的", pos: "adj" },
@@ -687,15 +665,15 @@ export const wordSets: Record<number, Word[]> = {
     { word: "posit", meaning: "假設", pos: "v" },
     { word: "cant", meaning: "斜坡", pos: "n" }
   ],
-  32: [
-    { word: "inauspicious", meaning: "不吉利的", pos: "adj" },
+  31: [
+    { word: "parsimonious", meaning: "吝嗇的 / 過於節儉的", pos: "adj" },
     { word: "approbation", meaning: "認可 / 贊許", pos: "n" },
     { word: "apocryphal", meaning: "偽造的 / 可疑的", pos: "adj" },
     { word: "dilettante", meaning: "業餘愛好者", pos: "n" },
     { word: "solicitous", meaning: "關切的 / 掛念的", pos: "adj" },
     { word: "attenuate", meaning: "變細 / 變弱", pos: "v" },
     { word: "immutable", meaning: "不變的", pos: "adj" },
-    { word: "insinuate", meaning: "暗示", pos: "v" },
+    { word: "coruscate", meaning: "閃爍 / 煥發", pos: "v" },
     { word: "voracious", meaning: "貪婪的", pos: "adj" },
     { word: "construe", meaning: "解釋 / 理解為", pos: "v" },
     { word: "ossified", meaning: "僵化的", pos: "adj" },
@@ -709,7 +687,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "preen", meaning: "整理羽毛", pos: "v" },
     { word: "bung", meaning: "塞子", pos: "n" }
   ],
-  33: [
+  32: [
     { word: "incorrigible", meaning: "積習難改的", pos: "adj" },
     { word: "anachronism", meaning: "時代錯誤 / 不合時宜的人事物", pos: "n" },
     { word: "apoplectic", meaning: "勃然大怒的", pos: "adj" },
@@ -731,7 +709,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "quaff", meaning: "狂飲", pos: "v" },
     { word: "boor", meaning: "粗魯的人", pos: "n" }
   ],
-  34: [
+  33: [
     { word: "inextricable", meaning: "無法擺脫的", pos: "adj" },
     { word: "vituperative", meaning: "辱罵的", pos: "adj" },
     { word: "apotheosis", meaning: "神化 / 典範 / 巔峰", pos: "n" },
@@ -753,7 +731,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "qualm", meaning: "疑慮", pos: "n" },
     { word: "bilk", meaning: "欺騙 / 詐騙", pos: "v" }
   ],
-  35: [
+  34: [
     { word: "interlocutor", meaning: "對話者 / 談話對手", pos: "n" },
     { word: "tergiversate", meaning: "支吾其詞 / 變節、背叛", pos: "v" },
     { word: "archetypal", meaning: "原型的 / 典型的", pos: "adj" },
@@ -775,7 +753,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "quash", meaning: "撤銷", pos: "v" },
     { word: "bane", meaning: "禍根 / 苦惱之源", pos: "n" }
   ],
-  36: [
+  35: [
     { word: "intransigent", meaning: "不妥協的 / 固執的", pos: "adj" },
     { word: "recalcitrant", meaning: "桀驁不馴的 / 頑抗的", pos: "adj" },
     { word: "capitulate", meaning: "投降 / 屈服", pos: "v" },
@@ -797,7 +775,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "skiff", meaning: "小船", pos: "n" },
     { word: "aver", meaning: "斷言 / 證實", pos: "v" }
   ],
-  37: [
+  36: [
     { word: "multifarious", meaning: "多種多樣的 / 各式各樣的", pos: "adj" },
     { word: "ramification", meaning: "後果", pos: "n" },
     { word: "capricious", meaning: "反覆無常的 / 任性的", pos: "adj" },
@@ -819,7 +797,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "slack", meaning: "鬆弛的", pos: "adj" },
     { word: "usurp", meaning: "篡奪", pos: "v" }
   ],
-  38: [
+  37: [
     { word: "obstetrician", meaning: "產科醫生", pos: "n" },
     { word: "predilection", meaning: "偏好 / 嗜好", pos: "n" },
     { word: "circumvent", meaning: "規避 / 繞過", pos: "v" },
@@ -841,7 +819,7 @@ export const wordSets: Record<number, Word[]> = {
     { word: "staid", meaning: "沉著的 / 穩重的", pos: "adj" },
     { word: "trite", meaning: "陳腐的 / 平庸的", pos: "adj" }
   ],
-  39: [
+  38: [
     { word: "obstreperous", meaning: "喧鬧的 / 難駕馭的", pos: "adj" },
     { word: "pertinacious", meaning: "頑固的 / 執拗的", pos: "adj" },
     { word: "compendium", meaning: "摘要 / 概略", pos: "n" },
@@ -863,8 +841,8 @@ export const wordSets: Record<number, Word[]> = {
     { word: "stoop", meaning: "屈身", pos: "v" },
     { word: "toady", meaning: "諂媚者 / 拍馬屁的人", pos: "n" }
   ],
-  40: [
-    { word: "onomatopoeia", meaning: "擬聲詞", pos: "n" },
+  39: [
+    { word: "desideratum", meaning: "迫切需要的東西", pos: "n" },
     { word: "ostentatious", meaning: "炫耀的", pos: "adj" },
     { word: "condescend", meaning: "屈尊", pos: "v" },
     { word: "confluence", meaning: "匯流 / 聚集", pos: "n" },
@@ -874,16 +852,38 @@ export const wordSets: Record<number, Word[]> = {
     { word: "indelible", meaning: "難以磨滅的", pos: "adj" },
     { word: "amenable", meaning: "順從的 / 願意接受的", pos: "adj" },
     { word: "anathema", meaning: "詛咒 / 令人討厭的事物", pos: "n" },
-    { word: "precious", meaning: "珍貴的", pos: "adj" },
+    { word: "captious", meaning: "吹毛求疵的", pos: "adj" },
     { word: "preclude", meaning: "排除 / 阻止", pos: "v" },
     { word: "fatuous", meaning: "愚笨的 / 昏庸的", pos: "adj" },
     { word: "fervent", meaning: "熱烈的", pos: "adj" },
     { word: "cajole", meaning: "哄騙 / 誘騙", pos: "v" },
     { word: "candor", meaning: "坦白 / 直率", pos: "n" },
-    { word: "pebble", meaning: "小卵石", pos: "n" },
+    { word: "cenotaph", meaning: "紀念碑", pos: "n" },
     { word: "penury", meaning: "赤貧", pos: "n" },
     { word: "strut", meaning: "趾高氣揚地走", pos: "v" },
     { word: "tepid", meaning: "微溫的", pos: "adj" }
+  ],
+  40: [
+    { word: "verisimilitude", meaning: "逼真 / 貌似真實", pos: "n" },
+    { word: "expostulate", meaning: "勸誡 / 抗議", pos: "v" },
+    { word: "heteroclite", meaning: "不規則的 / 異常的", pos: "adj" },
+    { word: "ignominious", meaning: "可恥的 / 不光彩的", pos: "adj" },
+    { word: "effervescent", meaning: "歡騰的 / 冒泡的", pos: "adj" },
+    { word: "intractable", meaning: "難駕馭的 / 棘手的", pos: "adj" },
+    { word: "subservient", meaning: "屈從的 / 奉承的", pos: "adj" },
+    { word: "caliginous", meaning: "昏暗的 / 朦朧的", pos: "adj" },
+    { word: "desuetude", meaning: "廢止 / 不用", pos: "n" },
+    { word: "chimerical", meaning: "幻想的 / 荒誕不經的", pos: "adj" },
+    { word: "sagacious", meaning: "睿智的 / 聰明的", pos: "adj" },
+    { word: "tenacious", meaning: "頑強的 / 固執的", pos: "adj" },
+    { word: "discalced", meaning: "赤腳的", pos: "adj" },
+    { word: "effulgent", meaning: "光輝燦爛的", pos: "adj" },
+    { word: "ameliorate", meaning: "改善 / 改良", pos: "v" },
+    { word: "insouciant", meaning: "漫不經心的 / 無憂無慮的", pos: "adj" },
+    { word: "demarche", meaning: "政治舉措 / 外交步驟", pos: "n" },
+    { word: "balk", meaning: "猶豫 / 阻礙", pos: "v" },
+    { word: "exegesis", meaning: "詮釋 / 註釋", pos: "n" },
+    { word: "dirk", meaning: "匕首 / 短劍", pos: "n" }
   ]
 };
 

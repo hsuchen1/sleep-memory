@@ -27,7 +27,7 @@ export default function App() {
   // For the current session
   const [currentTaskType, setCurrentTaskType] = useState<TaskType | null>(null);
   const [immediateScore, setImmediateScore] = useState<number | null>(null);
-  const [initialLearningTime, setInitialLearningTime] = useState<number>(10 * 60);
+  const [initialLearningTime, setInitialLearningTime] = useState<number>(5 * 60);
   const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
@@ -51,11 +51,11 @@ export default function App() {
       const startTime = new Date(profile.learning_start_time).getTime();
       const now = Date.now();
       const elapsed = now - startTime;
-      const tenMinutes = 10 * 60 * 1000;
+      const fiveMinutes = 5 * 60 * 1000;
 
-      if (elapsed < tenMinutes) {
+      if (elapsed < fiveMinutes) {
         setCurrentTaskType(profile.learning_task_type);
-        setInitialLearningTime(Math.floor((tenMinutes - elapsed) / 1000));
+        setInitialLearningTime(Math.floor((fiveMinutes - elapsed) / 1000));
         setAppState('learning');
       } else {
         // Expired
@@ -182,7 +182,7 @@ export default function App() {
         learning_task_type: type
       });
       setCurrentTaskType(type);
-      setInitialLearningTime(10 * 60);
+      setInitialLearningTime(5 * 60);
       setUserProfile({ ...userProfile, learning_start_time: startTime, learning_task_type: type });
       setAppState('learning');
     } catch (error) {

@@ -37,8 +37,8 @@ export default function RuleModal({ onClose }: RuleModalProps) {
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">📖</span>
               <div>
-                <div className="font-bold text-gray-800">2. 單字學習 (10 分鐘)</div>
-                <div className="text-xs text-gray-500 mt-1 font-medium">專注記憶 20 個英文單字與中文意思。中途離開超過 10 分鐘將作廢。</div>
+                <div className="font-bold text-gray-800">2. 單字學習 (5 分鐘)</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">專注記憶 20 個英文單字與中文意思。中途離開超過 5 分鐘將作廢。</div>
               </div>
             </div>
 

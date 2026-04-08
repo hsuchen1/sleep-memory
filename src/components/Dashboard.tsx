@@ -349,7 +349,7 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
               </span>嗎？
             </h3>
             <p className="text-sm text-gray-500 font-medium">
-              開始後將進入 10 分鐘的學習階段，中途請勿離開。
+              開始後將進入 5 分鐘的學習階段，中途請勿離開。
             </p>
             <div className="flex flex-col space-y-3">
               <button 

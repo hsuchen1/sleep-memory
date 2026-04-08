@@ -19,7 +19,7 @@ export default function Landing() {
         <div className="space-y-6 text-left bg-gray-50 p-8 rounded-2xl">
           <div className="flex items-center space-x-4">
             <Clock className="w-6 h-6 text-blue-500" />
-            <span className="text-lg text-gray-700">每次 10 分鐘</span>
+            <span className="text-lg text-gray-700">每次 5 分鐘</span>
           </div>
           <div className="flex items-center space-x-4">
             <Brain className="w-6 h-6 text-purple-500" />

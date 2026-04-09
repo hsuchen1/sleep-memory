@@ -381,7 +381,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* FABs */}
-      {appState !== 'learning' && appState !== 'testing' && appState !== 'survey' && (
+      {appState !== 'learning' && appState !== 'testing' && appState !== 'survey' && appState !== 'distractor' && (
         <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 flex flex-col space-y-3 z-50">
           <button 
             className="bg-white/90 backdrop-blur-sm shadow-lg border-2 sm:border-4 border-[#FFE4A0]/30 rounded-full py-2 px-4 sm:py-3 sm:px-6 flex items-center space-x-2 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-90"

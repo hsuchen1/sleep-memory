@@ -110,7 +110,7 @@ export default function Distractor({ onComplete }: DistractorProps) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden bg-gray-50">
-      <div className="absolute top-8 left-0 right-0 px-8">
+      <div className="w-full max-w-sm px-4 mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-gray-500 font-bold">干擾任務：數學判斷</span>
           <span className="text-2xl font-bold text-[#D49A00]">{correctCount} / {TARGET_CORRECT}</span>
@@ -126,7 +126,7 @@ export default function Distractor({ onComplete }: DistractorProps) {
         </p>
       </div>
 
-      <div className="relative w-full max-w-sm aspect-[3/4] mt-16">
+      <div className="relative w-full max-w-sm aspect-[3/4]">
         <AnimatePresence>
           {cards.map((card, index) => {
             // Only render the top two cards for performance and visual stacking

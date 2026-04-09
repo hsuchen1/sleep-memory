@@ -121,6 +121,44 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
     }
   };
 
+  const handleClearAllData = async () => {
+    if (!auth.currentUser) return;
+    
+    const password = window.prompt('警告：這將刪除所有使用者的資料！\n請輸入密碼以確認執行：');
+    if (password !== 'delete') {
+      if (password !== null) {
+        alert('密碼錯誤，操作已取消。');
+      }
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 1. 刪除所有 TestRecords
+      const recordsSnapshot = await getDocs(collection(db, 'TestRecords'));
+      const deletePromises = recordsSnapshot.docs.map(d => deleteDoc(d.ref));
+      await Promise.all(deletePromises);
+
+      // 2. 重置所有 users 的進度
+      const usersSnapshot = await getDocs(collection(db, 'users'));
+      const updatePromises = usersSnapshot.docs.map(d => 
+        updateDoc(d.ref, {
+          current_round: 1,
+          learning_start_time: deleteField(),
+          learning_task_type: deleteField()
+        })
+      );
+      await Promise.all(updatePromises);
+
+      alert('已成功清除「所有使用者」的紀錄並重置進度！');
+      window.location.reload();
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, 'TestRecords/users (ALL)');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleFastForward = async () => {
     if (!activeRecord) return;
     setLoading(true);
@@ -273,11 +311,20 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
                   onClick={handleClearData}
                   disabled={loading}
                   className={`w-full flex items-center gap-2 py-3 px-3 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 ${
-                    confirmClear ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
+                    confirmClear ? 'bg-orange-600 text-white hover:bg-orange-700' : 'bg-orange-50 text-orange-600 hover:bg-orange-100 border border-orange-200'
                   }`}
                 >
                   <Trash2 className="w-4 h-4" />
                   {confirmClear ? '確定刪除？(再次點擊)' : '清除我的所有紀錄與進度'}
+                </button>
+
+                <button 
+                  onClick={handleClearAllData}
+                  disabled={loading}
+                  className="w-full flex items-center gap-2 py-3 px-3 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  危險：清除「所有人」的紀錄與進度
                 </button>
                 
                 <button 

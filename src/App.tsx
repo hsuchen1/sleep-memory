@@ -30,6 +30,26 @@ export default function App() {
   const [immediateScore, setImmediateScore] = useState<number | null>(null);
   const [initialLearningTime, setInitialLearningTime] = useState<number>(5 * 60);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Session Storage Persistence
+  const SESSION_KEY = 'experiment_progress';
+  const APP_VERSION = '1.0';
+
+  useEffect(() => {
+    if (appState !== 'landing' && appState !== 'setup' && appState !== 'dashboard') {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        version: APP_VERSION,
+        timestamp: Date.now(),
+        appState,
+        currentTaskType,
+        immediateScore,
+        initialLearningTime
+      }));
+    } else {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+  }, [appState, currentTaskType, immediateScore, initialLearningTime]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, 'system', 'config'), (docSnap) => {
@@ -96,6 +116,25 @@ export default function App() {
         if (record) {
           setAppState('dashboard');
         } else {
+          // Check Session Storage first
+          const savedSession = sessionStorage.getItem(SESSION_KEY);
+          if (savedSession) {
+            try {
+              const parsed = JSON.parse(savedSession);
+              const isExpired = Date.now() - parsed.timestamp > 15 * 60 * 1000; // 15 mins max for session recovery
+              if (parsed.version === APP_VERSION && !isExpired) {
+                setCurrentTaskType(parsed.currentTaskType);
+                setImmediateScore(parsed.immediateScore);
+                setInitialLearningTime(parsed.initialLearningTime);
+                setAppState(parsed.appState);
+                return; // Skip normal checkLearningState
+              } else {
+                sessionStorage.removeItem(SESSION_KEY);
+              }
+            } catch (e) {
+              console.error("Session parse error", e);
+            }
+          }
           await checkLearningState(profile, auth.currentUser.uid);
         }
       } else {
@@ -122,6 +161,25 @@ export default function App() {
             if (record) {
               setAppState('dashboard');
             } else {
+              // Check Session Storage first
+              const savedSession = sessionStorage.getItem(SESSION_KEY);
+              if (savedSession) {
+                try {
+                  const parsed = JSON.parse(savedSession);
+                  const isExpired = Date.now() - parsed.timestamp > 15 * 60 * 1000; // 15 mins
+                  if (parsed.version === APP_VERSION && !isExpired) {
+                    setCurrentTaskType(parsed.currentTaskType);
+                    setImmediateScore(parsed.immediateScore);
+                    setInitialLearningTime(parsed.initialLearningTime);
+                    setAppState(parsed.appState);
+                    return; // Skip normal checkLearningState
+                  } else {
+                    sessionStorage.removeItem(SESSION_KEY);
+                  }
+                } catch (e) {
+                  console.error("Session parse error", e);
+                }
+              }
               await checkLearningState(profile, user.uid);
             }
           } else {
@@ -200,7 +258,8 @@ export default function App() {
   };
 
   const handleImmediateTestComplete = async (score: number) => {
-    if (!auth.currentUser || !userProfile || !currentTaskType) return;
+    if (!auth.currentUser || !userProfile || !currentTaskType || isSubmitting) return;
+    setIsSubmitting(true);
     
     const newRecord: TestRecord = {
       user_id: auth.currentUser.uid,
@@ -228,9 +287,12 @@ export default function App() {
       setUserProfile(updatedProfile);
 
       setActiveRecord({ id: newDocRef.id, ...newRecord });
+      sessionStorage.removeItem(SESSION_KEY);
       setAppState('dashboard');
     } catch (error) {
       handleFirestoreError(error, OperationType.CREATE, 'TestRecords');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -240,7 +302,8 @@ export default function App() {
   };
 
   const handleSurveyComplete = async (extraVariable: number) => {
-    if (!auth.currentUser || !userProfile || !activeRecord || immediateScore === null) return;
+    if (!auth.currentUser || !userProfile || !activeRecord || immediateScore === null || isSubmitting) return;
+    setIsSubmitting(true);
 
     const delayedTimestamp = new Date().toISOString();
     const immediateTime = new Date(activeRecord.immediate_timestamp).getTime();
@@ -272,11 +335,14 @@ export default function App() {
       setUserProfile({ ...userProfile, current_round: newRound });
       setActiveRecord(null);
       setImmediateScore(null);
+      sessionStorage.removeItem(SESSION_KEY);
       setAppState('dashboard');
       setShowCelebration(true);
       setTimeout(() => setShowCelebration(false), 5000);
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, 'TestRecords');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

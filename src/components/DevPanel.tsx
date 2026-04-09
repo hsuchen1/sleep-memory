@@ -112,6 +112,13 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
         learning_start_time: deleteField(),
         learning_task_type: deleteField()
       });
+      
+      // 清除本地暫存，避免重整後又恢復到剛才的任務狀態
+      sessionStorage.removeItem('experiment_progress');
+      sessionStorage.removeItem('testing_shuffledWords');
+      sessionStorage.removeItem('testing_currentIndex');
+      sessionStorage.removeItem('testing_score');
+      
       onDataCleared();
     } catch (error) {
       handleFirestoreError(error, OperationType.DELETE, 'TestRecords/users');
@@ -149,6 +156,12 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
         })
       );
       await Promise.all(updatePromises);
+
+      // 清除本地暫存
+      sessionStorage.removeItem('experiment_progress');
+      sessionStorage.removeItem('testing_shuffledWords');
+      sessionStorage.removeItem('testing_currentIndex');
+      sessionStorage.removeItem('testing_score');
 
       alert('已成功清除「所有使用者」的紀錄並重置進度！');
       window.location.reload();

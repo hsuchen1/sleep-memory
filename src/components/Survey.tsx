@@ -8,6 +8,13 @@ interface SurveyProps {
 
 export default function Survey({ taskType, onComplete }: SurveyProps) {
   const [value, setValue] = useState<number>(taskType === 'sleep' ? 7 : 3);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    onComplete(value);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -53,10 +60,13 @@ export default function Survey({ taskType, onComplete }: SurveyProps) {
         )}
 
         <button
-          onClick={() => onComplete(value)}
-          className="w-full bg-[#FFB4A2] text-white text-xl font-bold py-4 rounded-full hover:bg-[#FF9F8A] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 active:scale-90"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className={`w-full text-white text-xl font-bold py-4 rounded-full transition-all duration-300 shadow-md ${
+            isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#FFB4A2] hover:bg-[#FF9F8A] hover:-translate-y-1 hover:shadow-lg active:scale-90'
+          }`}
         >
-          完成本回合 ✨
+          {isSubmitting ? '處理中...' : '完成本回合 ✨'}
         </button>
       </div>
     </div>

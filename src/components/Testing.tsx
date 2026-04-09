@@ -51,13 +51,13 @@ export default function Testing({ words, onComplete }: TestingProps) {
     let samePosWords = words.filter(w => w.word !== currentWord.word && w.pos === currentWord.pos);
     
     // 2. If not enough, fill with other POS
-    if (samePosWords.length < 3) {
+    if (samePosWords.length < 5) {
       const otherPosWords = words.filter(w => w.word !== currentWord.word && w.pos !== currentWord.pos);
       samePosWords = [...samePosWords, ...otherPosWords];
     }
 
-    // 3. Use Fisher-Yates shuffle to pick 3 wrong options
-    const wrongOptions = shuffleArray(samePosWords).slice(0, 3).map(w => w.meaning);
+    // 3. Use Fisher-Yates shuffle to pick 5 wrong options
+    const wrongOptions = shuffleArray(samePosWords).slice(0, 5).map(w => w.meaning);
       
     const allOptions = [...wrongOptions, currentWord.meaning];
     // Shuffle all options
@@ -118,33 +118,11 @@ export default function Testing({ words, onComplete }: TestingProps) {
         </div>
 
         <div className="w-full space-y-4 pt-4">
-          {options.map((opt, i) => {
-            const isSelected = selectedOption === opt;
-            const isOtherSelected = selectedOption !== undefined && selectedOption !== opt;
-            
-            return (
-              <button
-                key={`${currentIndex}-${i}`}
-                onClick={() => handleSelect(opt)}
-                disabled={isTransitioning}
-                className={`w-full text-xl font-bold py-6 rounded-[2rem] border-4 shadow-md transition-all duration-300 active:scale-90 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
-                  isSelected 
-                    ? 'bg-[#F4FAFF] text-[#B5E2FA] border-[#B5E2FA] opacity-100' 
-                    : isOtherSelected
-                      ? 'bg-white text-gray-800 border-[#E5E0FF] opacity-50'
-                      : 'bg-white text-gray-800 border-[#E5E0FF] hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg'
-                }`}
-              >
-                {opt}
-              </button>
-            );
-          })}
-          
           <button
             key={`forgot-${currentIndex}`}
             onClick={() => handleSelect(null)}
             disabled={isTransitioning}
-            className={`w-full text-xl font-bold py-6 rounded-[2rem] border-4 transition-all duration-300 active:scale-90 mt-8 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
+            className={`w-full text-xl font-bold py-4 rounded-[2rem] border-4 transition-all duration-300 active:scale-90 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
               selectedOption === null
                 ? 'bg-gray-200 text-gray-600 border-gray-400 opacity-100'
                 : selectedOption !== undefined
@@ -154,6 +132,30 @@ export default function Testing({ words, onComplete }: TestingProps) {
           >
             🤷 我真的忘記了
           </button>
+
+          <div className="grid grid-cols-2 gap-3">
+            {options.map((opt, i) => {
+              const isSelected = selectedOption === opt;
+              const isOtherSelected = selectedOption !== undefined && selectedOption !== opt;
+              
+              return (
+                <button
+                  key={`${currentIndex}-${i}`}
+                  onClick={() => handleSelect(opt)}
+                  disabled={isTransitioning}
+                  className={`w-full text-lg font-bold py-4 px-2 rounded-[2rem] border-4 shadow-md transition-all duration-300 active:scale-90 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center text-center min-h-[80px] ${
+                    isSelected 
+                      ? 'bg-[#F4FAFF] text-[#B5E2FA] border-[#B5E2FA] opacity-100' 
+                      : isOtherSelected
+                        ? 'bg-white text-gray-800 border-[#E5E0FF] opacity-50'
+                        : 'bg-white text-gray-800 border-[#E5E0FF] hover:border-[#B5E2FA] hover:bg-[#F4FAFF] hover:-translate-y-1 hover:shadow-lg'
+                  }`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

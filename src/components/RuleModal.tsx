@@ -38,22 +38,30 @@ export default function RuleModal({ onClose }: RuleModalProps) {
               <span className="text-2xl shrink-0 mt-0.5">📖</span>
               <div>
                 <div className="font-bold text-gray-800">2. 單字學習 (5 分鐘)</div>
-                <div className="text-xs text-gray-500 mt-1 font-medium">專注記憶 20 個英文單字與中文意思。中途離開超過 5 分鐘將作廢。</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">專注記憶 30 個英文單字與中文意思。中途離開超過 5 分鐘將作廢。</div>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">📝</span>
               <div>
-                <div className="font-bold text-gray-800">3. 立即測驗</div>
-                <div className="text-xs text-gray-500 mt-1 font-medium">學習結束後，馬上進行 20 題選擇題測驗（看英文選中文）。</div>
+                <div className="font-bold text-gray-800">3. 數學干擾任務 (30 秒)</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">判斷畫面上出現的數學算式是否正確，向右滑動為正確，向左滑動為錯誤。</div>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <span className="text-2xl shrink-0 mt-0.5">📝</span>
+              <div>
+                <div className="font-bold text-gray-800">4. 立即測驗</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">學習結束後，馬上進行 30 題選擇題測驗（看英文選中文）。</div>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">⏳</span>
               <div>
-                <div className="font-bold text-gray-800">4. 大腦存檔期 (11~14 小時)</div>
+                <div className="font-bold text-gray-800">5. 大腦存檔期 (11~14 小時)</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">測驗後進入等待期，請依據任務類型進行日常活動或睡眠。</div>
               </div>
             </div>
@@ -61,7 +69,7 @@ export default function RuleModal({ onClose }: RuleModalProps) {
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">🧠</span>
               <div>
-                <div className="font-bold text-gray-800">5. 延遲測驗</div>
+                <div className="font-bold text-gray-800">6. 延遲測驗</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">11 小時後開放。請務必在 <span className="text-[#FF9F8A] font-bold">14 小時內</span>完成，否則該回合數據作廢。</div>
               </div>
             </div>
@@ -69,7 +77,7 @@ export default function RuleModal({ onClose }: RuleModalProps) {
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">📋</span>
               <div>
-                <div className="font-bold text-gray-800">6. 課後問卷</div>
+                <div className="font-bold text-gray-800">7. 課後問卷</div>
                 <div className="text-xs text-gray-500 mt-1 font-medium">完成延遲測驗後，填寫簡短的狀態問卷，即完成該回合。</div>
               </div>
             </div>

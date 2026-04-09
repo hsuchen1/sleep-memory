@@ -4,6 +4,7 @@ import { auth, db } from '../firebase';
 import { UserProfile, TestRecord } from '../types';
 import { handleFirestoreError, OperationType } from '../utils';
 import { Settings, Trash2, FastForward, SkipForward, Users, Activity, Megaphone, Wrench, X } from 'lucide-react';
+import { getTotalRounds } from '../wordSets';
 
 interface DevPanelProps {
   userProfile: UserProfile | null;
@@ -140,7 +141,8 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
     if (!auth.currentUser || !userProfile) return;
     setLoading(true);
     try {
-      await updateDoc(doc(db, 'users', auth.currentUser.uid), { current_round: 41 });
+      const totalRounds = getTotalRounds();
+      await updateDoc(doc(db, 'users', auth.currentUser.uid), { current_round: totalRounds + 1 });
       const dummySleepRecord: TestRecord = {
         user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: 1,
         task_type: 'sleep', immediate_score: 20, delayed_score: 18,
@@ -293,7 +295,7 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
                   className="w-full flex items-center gap-2 bg-purple-50 text-purple-600 hover:bg-purple-100 border border-purple-200 py-3 px-3 rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
                 >
                   <SkipForward className="w-4 h-4" />
-                  跳至第 41 回合 (測試完賽報告)
+                  跳至完賽報告
                 </button>
               </div>
             )}

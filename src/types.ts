@@ -1,5 +1,5 @@
 export type TaskType = 'daytime' | 'sleep';
-export type AppState = 'landing' | 'setup' | 'dashboard' | 'learning' | 'testing' | 'survey';
+export type AppState = 'landing' | 'setup' | 'dashboard' | 'learning' | 'distractor' | 'testing' | 'survey';
 
 export interface UserProfile {
   name: string;

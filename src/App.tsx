@@ -11,6 +11,7 @@ import Landing from './components/Landing';
 import Setup from './components/Setup';
 import Dashboard from './components/Dashboard';
 import Learning from './components/Learning';
+import Distractor from './components/Distractor';
 import Testing from './components/Testing';
 import Survey from './components/Survey';
 import RuleModal from './components/RuleModal';
@@ -191,6 +192,10 @@ export default function App() {
   };
 
   const handleLearningComplete = () => {
+    setAppState('distractor');
+  };
+
+  const handleDistractorComplete = () => {
     setAppState('testing');
   };
 
@@ -342,6 +347,9 @@ export default function App() {
           )}
           {appState === 'learning' && (
             <Learning words={currentWords} initialTimeLeft={initialLearningTime} onComplete={handleLearningComplete} />
+          )}
+          {appState === 'distractor' && (
+            <Distractor onComplete={handleDistractorComplete} />
           )}
           {appState === 'testing' && (
             <Testing 

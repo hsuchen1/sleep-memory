@@ -5,6 +5,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db, auth } from '../firebase';
 import { handleFirestoreError, OperationType } from '../utils';
 import { signOut } from 'firebase/auth';
+import { getTotalRounds } from '../wordSets';
 
 interface DashboardProps {
   userProfile: UserProfile;
@@ -25,6 +26,8 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
   
   const adminEmails = ['dyes101184@gmail.com', 'hsuchen1@g.ncu.edu.tw'];
   const isAdmin = userProfile.role === 'admin' || (auth.currentUser?.email && adminEmails.includes(auth.currentUser.email));
+
+  const totalRounds = getTotalRounds();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -60,7 +63,7 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
 
         setUserTaskCounts({ daytime: daytimeCount, sleep: sleepCount });
 
-        if (userProfile.current_round > 40) {
+        if (userProfile.current_round > totalRounds) {
           const sleepRetention = sleepTotalImmediate > 0 ? (sleepTotalDelayed / sleepTotalImmediate) : 0;
           const daytimeRetention = daytimeTotalImmediate > 0 ? (daytimeTotalDelayed / daytimeTotalImmediate) : 0;
           
@@ -248,7 +251,7 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
           <h2 className="text-3xl font-bold text-gray-800 leading-relaxed">
             嗨，{userProfile.name}！<br/>
             <span className="text-[#FFB4A2]">
-              {userProfile.current_round > 40 ? '恭喜完成所有挑戰！' : `目前進度：第 ${userProfile.current_round} 回挑戰`}
+              {userProfile.current_round > totalRounds ? '恭喜完成所有挑戰！' : `目前進度：第 ${userProfile.current_round} 回挑戰`}
             </span>
           </h2>
           
@@ -262,12 +265,12 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
           </div>
         </div>
 
-        {userProfile.current_round > 40 && report && (
+        {userProfile.current_round > totalRounds && report && (
           <div className="bg-gradient-to-br from-[#FFF1CC] to-[#FFE4A0] p-8 rounded-[3rem] shadow-xl border-4 border-white text-left space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="text-4xl mb-2">🏆</div>
             <h3 className="text-2xl font-bold text-[#D49A00]">大腦記憶力診斷報告</h3>
             <p className="text-[#B38000] font-medium text-lg leading-relaxed">
-              恭喜你完成了所有 40 回的記憶挑戰！
+              恭喜你完成了所有 {totalRounds} 回的記憶挑戰！
             </p>
             <div className="bg-white/80 p-6 rounded-2xl">
               <p className="text-gray-800 font-bold text-xl">
@@ -282,7 +285,7 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
           </div>
         )}
 
-        {userProfile.current_round <= 40 && (
+        {userProfile.current_round <= totalRounds && (
           <>
             {!activeRecord ? (
               <div className="space-y-6">

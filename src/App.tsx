@@ -412,10 +412,10 @@ export default function App() {
             />
           )}
           {appState === 'learning' && (
-            <Learning words={currentWords} initialTimeLeft={initialLearningTime} onComplete={handleLearningComplete} />
+            <Learning words={currentWords} initialTimeLeft={initialLearningTime} hasAnnouncement={!!announcement} onComplete={handleLearningComplete} />
           )}
           {appState === 'distractor' && (
-            <Distractor onComplete={handleDistractorComplete} />
+            <Distractor hasAnnouncement={!!announcement} onComplete={handleDistractorComplete} />
           )}
           {appState === 'testing' && (
             <Testing 

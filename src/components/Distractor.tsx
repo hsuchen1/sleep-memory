@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'motion/react';
+import { auth } from '../firebase';
 
 interface DistractorProps {
+  hasAnnouncement?: boolean;
   onComplete: () => void;
 }
 
@@ -43,7 +45,7 @@ function generateCard(id: number): MathCard {
   };
 }
 
-export default function Distractor({ onComplete }: DistractorProps) {
+export default function Distractor({ hasAnnouncement = false, onComplete }: DistractorProps) {
   const [correctCount, setCorrectCount] = useState(0);
   const [consecutiveWrong, setConsecutiveWrong] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
@@ -110,6 +112,14 @@ export default function Distractor({ onComplete }: DistractorProps) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden bg-gray-50">
+      {auth.currentUser?.email === 'dyes101184@gmail.com' && (
+        <button 
+          onClick={onComplete}
+          className={`absolute ${hasAnnouncement ? 'top-16' : 'top-4'} right-4 z-50 text-xs bg-[#B5E2FA] hover:bg-[#9ACCE6] text-gray-800 px-4 py-2 rounded-full transition-all duration-300 hover:-translate-y-1 active:scale-90 font-bold`}
+        >
+          [開發測試] 跳過數學題
+        </button>
+      )}
       <div className="w-full max-w-sm px-4 mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-gray-500 font-bold">干擾任務：數學判斷</span>

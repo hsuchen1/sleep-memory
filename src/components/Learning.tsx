@@ -5,10 +5,11 @@ import { auth } from '../firebase';
 interface LearningProps {
   words: Word[];
   initialTimeLeft: number;
+  hasAnnouncement?: boolean;
   onComplete: () => void;
 }
 
-export default function Learning({ words, initialTimeLeft, onComplete }: LearningProps) {
+export default function Learning({ words, initialTimeLeft, hasAnnouncement = false, onComplete }: LearningProps) {
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function Learning({ words, initialTimeLeft, onComplete }: Learnin
 
   return (
     <div className="min-h-screen flex flex-col p-4">
-      <div className="text-center py-6 sticky top-0 bg-[#FFFDF8]/90 backdrop-blur-md border-b-4 border-[#FFE4A0]/30 z-10 flex flex-col items-center rounded-b-[2rem]">
+      <div className={`text-center py-6 sticky ${hasAnnouncement ? 'top-12' : 'top-0'} bg-[#FFFDF8]/90 backdrop-blur-md border-b-4 border-[#FFE4A0]/30 z-10 flex flex-col items-center rounded-b-[2rem]`}>
         <div className={`text-5xl font-mono font-bold tracking-tighter transition-colors duration-500 ${isUrgent ? 'text-red-500 animate-pulse' : 'text-[#FFB4A2]'}`}>
           {m.toString().padStart(2, '0')}:{s.toString().padStart(2, '0')}
         </div>

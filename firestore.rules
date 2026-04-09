@@ -19,8 +19,8 @@ service cloud.firestore {
     //   - user_name: string (required, < 50 chars)
     //   - round_number: number (required, >= 1)
     //   - task_type: string (required, 'daytime' or 'sleep')
-    //   - immediate_score: number (required, >= 0, <= 15)
-    //   - delayed_score: number (optional, >= 0, <= 15)
+    //   - immediate_score: number (required, >= 0, <= 30)
+    //   - delayed_score: number (optional, >= 0, <= 30)
     //   - immediate_timestamp: string (required, valid date string)
     //   - delayed_timestamp: string (optional, valid date string)
     //   - interval_hours: number (optional, >= 0)
@@ -83,11 +83,11 @@ service cloud.firestore {
              data.user_name is string && data.user_name.size() > 0 && data.user_name.size() < 50 &&
              data.round_number is number && data.round_number >= 1 &&
              data.task_type in ['daytime', 'sleep'] &&
-             data.immediate_score is number && data.immediate_score >= 0 && data.immediate_score <= 20 &&
+             data.immediate_score is number && data.immediate_score >= 0 && data.immediate_score <= 30 &&
              data.immediate_timestamp is string && isValidDateString(data.immediate_timestamp) &&
              data.is_valid is bool &&
              data.status in ['waiting', 'completed'] &&
-             (!('delayed_score' in data) || (data.delayed_score is number && data.delayed_score >= 0 && data.delayed_score <= 20)) &&
+             (!('delayed_score' in data) || (data.delayed_score is number && data.delayed_score >= 0 && data.delayed_score <= 30)) &&
              (!('delayed_timestamp' in data) || (data.delayed_timestamp is string && isValidDateString(data.delayed_timestamp))) &&
              (!('interval_hours' in data) || (data.interval_hours is number && data.interval_hours >= 0)) &&
              (!('extra_variable' in data) || (data.extra_variable is number && data.extra_variable >= 0));

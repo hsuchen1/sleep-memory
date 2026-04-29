@@ -273,14 +273,27 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
               恭喜你完成了所有 {totalRounds} 回的記憶挑戰！
             </p>
             <div className="bg-white/80 p-6 rounded-2xl">
-              <p className="text-gray-800 font-bold text-xl">
-                你的睡眠記憶紅利是 <span className="text-[#FFB4A2] text-3xl">{report.sleepBonus > 0 ? '+' : ''}{report.sleepBonus}%</span>！
-              </p>
-              <p className="text-gray-600 mt-2 font-medium">
-                {report.sleepBonus > 0 
-                  ? '看來你是一顆需要充足睡眠的大腦！睡眠對你的記憶鞏固非常有幫助。'
-                  : '你的大腦在白天也能保持很好的記憶力！不過充足的睡眠依然對健康很重要喔。'}
-              </p>
+              {(userTaskCounts.daytime < 4 || userTaskCounts.sleep < 4) ? (
+                <>
+                  <p className="text-gray-600 font-medium leading-relaxed">
+                    由於您的有效作答次數不足 (白日或睡眠任務少於 4 次)，可能無法分析出具代表性的睡眠獎勵分數。
+                  </p>
+                  <p className="text-gray-800 font-bold text-lg mt-4">
+                    👉 粗估粗略紅利：<span className="text-gray-400 text-2xl">{report.sleepBonus > 0 ? '+' : ''}{report.sleepBonus}%</span>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-800 font-bold text-xl">
+                    你的睡眠記憶紅利是 <span className="text-[#FFB4A2] text-3xl">{report.sleepBonus > 0 ? '+' : ''}{report.sleepBonus}%</span>！
+                  </p>
+                  <p className="text-gray-600 mt-2 font-medium">
+                    {report.sleepBonus > 0 
+                      ? '看來你是一顆需要充足睡眠的大腦！睡眠對你的記憶鞏固非常有幫助。'
+                      : '你的大腦在白天也能保持很好的記憶力！不過充足的睡眠依然對健康很重要喔。'}
+                  </p>
+                </>
+              )}
             </div>
           </div>
         )}

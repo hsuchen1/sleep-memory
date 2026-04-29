@@ -409,6 +409,17 @@ export default function App() {
   return (
     <>
       <AnimatePresence>
+        {isSubmitting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center"
+          >
+            <div className="w-16 h-16 border-4 border-[#FFB4A2] border-t-[#6B5B95] rounded-full animate-spin"></div>
+            <p className="mt-6 text-xl font-bold text-[#6B5B95] animate-pulse">送出中...請確保網路通暢</p>
+          </motion.div>
+        )}
         {announcement && (
           <motion.div 
             initial={{ opacity: 0, y: -50 }}

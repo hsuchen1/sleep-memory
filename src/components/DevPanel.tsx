@@ -195,17 +195,21 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
       const totalRounds = getTotalRounds();
       await updateDoc(doc(db, 'users', auth.currentUser.uid), { current_round: totalRounds + 1 });
       const dummySleepRecord: TestRecord = {
-        user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: 1,
+        user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: totalRounds + 1,
         task_type: 'sleep', immediate_score: 15, delayed_score: 14,
         immediate_timestamp: new Date().toISOString(), is_valid: true, status: 'completed'
       };
       const dummyDaytimeRecord: TestRecord = {
-        user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: 2,
+        user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: totalRounds + 2,
         task_type: 'daytime', immediate_score: 15, delayed_score: 10,
         immediate_timestamp: new Date().toISOString(), is_valid: true, status: 'completed'
       };
-      await addDoc(collection(db, 'TestRecords'), dummySleepRecord);
-      await addDoc(collection(db, 'TestRecords'), dummyDaytimeRecord);
+      
+      const sleepId = `${auth.currentUser.uid}_${totalRounds + 1}`;
+      const daytimeId = `${auth.currentUser.uid}_${totalRounds + 2}`;
+      
+      await setDoc(doc(db, 'TestRecords', sleepId), dummySleepRecord);
+      await setDoc(doc(db, 'TestRecords', daytimeId), dummyDaytimeRecord);
       window.location.reload();
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, 'TestRecords/users');

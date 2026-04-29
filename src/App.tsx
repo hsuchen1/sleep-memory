@@ -43,6 +43,7 @@ export default function App() {
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({
         version: APP_VERSION,
         timestamp: Date.now(),
+        uid: auth.currentUser?.uid,
         appState,
         currentTaskType,
         immediateScore,
@@ -126,7 +127,7 @@ export default function App() {
             try {
               const parsed = JSON.parse(savedSession);
               const isExpired = Date.now() - parsed.timestamp > 15 * 60 * 1000; // 15 mins max for session recovery
-              if (parsed.version === APP_VERSION && !isExpired) {
+              if (parsed.version === APP_VERSION && !isExpired && parsed.uid === auth.currentUser.uid) {
                 setCurrentTaskType(parsed.currentTaskType);
                 setImmediateScore(parsed.immediateScore);
                 setInitialLearningTime(parsed.initialLearningTime);
@@ -187,7 +188,7 @@ export default function App() {
                 try {
                   const parsed = JSON.parse(savedSession);
                   const isExpired = Date.now() - parsed.timestamp > 15 * 60 * 1000; // 15 mins
-                  if (parsed.version === APP_VERSION && !isExpired) {
+                  if (parsed.version === APP_VERSION && !isExpired && parsed.uid === user.uid) {
                     setCurrentTaskType(parsed.currentTaskType);
                     setImmediateScore(parsed.immediateScore);
                     setInitialLearningTime(parsed.initialLearningTime);
@@ -301,7 +302,8 @@ export default function App() {
     };
 
     try {
-      const newDocRef = doc(collection(db, 'TestRecords'));
+      const recordId = `${auth.currentUser.uid}_${userProfile.current_round}`;
+      const newDocRef = doc(db, 'TestRecords', recordId);
       await setDoc(newDocRef, newRecord);
       
       await updateDoc(doc(db, 'users', auth.currentUser.uid), {

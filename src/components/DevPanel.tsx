@@ -196,12 +196,12 @@ export default function DevPanel({ userProfile, activeRecord, onDataCleared, onF
       await updateDoc(doc(db, 'users', auth.currentUser.uid), { current_round: totalRounds + 1 });
       const dummySleepRecord: TestRecord = {
         user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: 1,
-        task_type: 'sleep', immediate_score: 20, delayed_score: 18,
+        task_type: 'sleep', immediate_score: 15, delayed_score: 14,
         immediate_timestamp: new Date().toISOString(), is_valid: true, status: 'completed'
       };
       const dummyDaytimeRecord: TestRecord = {
         user_id: auth.currentUser.uid, user_name: userProfile.name, round_number: 2,
-        task_type: 'daytime', immediate_score: 20, delayed_score: 15,
+        task_type: 'daytime', immediate_score: 15, delayed_score: 10,
         immediate_timestamp: new Date().toISOString(), is_valid: true, status: 'completed'
       };
       await addDoc(collection(db, 'TestRecords'), dummySleepRecord);

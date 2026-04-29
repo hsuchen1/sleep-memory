@@ -289,6 +289,10 @@ export default function Dashboard({ userProfile, activeRecord, onStartTask, onSt
           <>
             {!activeRecord ? (
               <div className="space-y-6">
+                <div className="bg-white/80 backdrop-blur-sm border-2 border-[#B5E2FA]/50 text-[#6B5B95] px-5 py-4 rounded-[2rem] text-sm font-bold flex items-center space-x-3 shadow-sm mx-2">
+                  <span className="text-2xl shrink-0">💡</span>
+                  <p className="leading-relaxed">建議交替進行<span className="text-[#D49A00]">「白日任務」</span>與<span className="text-[#6B5B95]">「睡眠任務」</span>，這樣系統能為您產生更精準的記憶對比分析！</p>
+                </div>
                 <button
                   onClick={() => setConfirmTask('daytime')}
                   className="w-full flex items-center justify-center space-x-4 bg-[#FFF1CC] text-[#D49A00] border-4 border-white shadow-lg py-8 rounded-[3rem] hover:bg-[#FFE4A0] hover:-translate-y-1 hover:shadow-xl transition-all duration-300 active:scale-90"

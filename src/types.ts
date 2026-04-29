@@ -19,6 +19,7 @@ export interface TestRecord {
   delayed_score?: number;
   immediate_timestamp: string;
   delayed_timestamp?: string;
+  delayed_words?: any[];
   interval_hours?: number;
   extra_variable?: number;
   is_valid: boolean;

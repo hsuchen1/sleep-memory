@@ -31,6 +31,8 @@ export default function App() {
   const [initialLearningTime, setInitialLearningTime] = useState<number>(5 * 60);
   const [showCelebration, setShowCelebration] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [immediateTestWords, setImmediateTestWords] = useState<any[]>([]);
+  const [delayedTestWords, setDelayedTestWords] = useState<any[]>([]);
 
   // Session Storage Persistence
   const SESSION_KEY = 'experiment_progress';
@@ -44,7 +46,9 @@ export default function App() {
         appState,
         currentTaskType,
         immediateScore,
-        initialLearningTime
+        initialLearningTime,
+        immediateTestWords,
+        delayedTestWords
       }));
     } else {
       sessionStorage.removeItem(SESSION_KEY);
@@ -126,6 +130,8 @@ export default function App() {
                 setCurrentTaskType(parsed.currentTaskType);
                 setImmediateScore(parsed.immediateScore);
                 setInitialLearningTime(parsed.initialLearningTime);
+                if (parsed.immediateTestWords) setImmediateTestWords(parsed.immediateTestWords);
+                if (parsed.delayedTestWords) setDelayedTestWords(parsed.delayedTestWords);
                 setAppState(parsed.appState);
                 return; // Skip normal checkLearningState
               } else {
@@ -171,6 +177,8 @@ export default function App() {
                     setCurrentTaskType(parsed.currentTaskType);
                     setImmediateScore(parsed.immediateScore);
                     setInitialLearningTime(parsed.initialLearningTime);
+                    if (parsed.immediateTestWords) setImmediateTestWords(parsed.immediateTestWords);
+                    if (parsed.delayedTestWords) setDelayedTestWords(parsed.delayedTestWords);
                     setAppState(parsed.appState);
                     return; // Skip normal checkLearningState
                   } else {
@@ -254,6 +262,11 @@ export default function App() {
   };
 
   const handleDistractorComplete = () => {
+    // Shuffle the 30 words and split into immediate and delayed lists
+    const currentWords = userProfile ? getWordSet(userProfile.current_round) : [];
+    const shuffled = [...currentWords].sort(() => Math.random() - 0.5);
+    setImmediateTestWords(shuffled.slice(0, 15));
+    setDelayedTestWords(shuffled.slice(15, 30));
     setAppState('testing');
   };
 
@@ -268,6 +281,7 @@ export default function App() {
       task_type: currentTaskType,
       immediate_score: score,
       immediate_timestamp: new Date().toISOString(),
+      delayed_words: delayedTestWords,
       is_valid: true,
       status: 'waiting'
     };
@@ -419,7 +433,7 @@ export default function App() {
           )}
           {appState === 'testing' && (
             <Testing 
-              words={currentWords} 
+              words={activeRecord ? (activeRecord.delayed_words ? activeRecord.delayed_words as any[] : currentWords) : immediateTestWords} 
               onComplete={activeRecord ? handleDelayedTestComplete : handleImmediateTestComplete} 
             />
           )}

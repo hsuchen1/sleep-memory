@@ -54,7 +54,7 @@ export default function RuleModal({ onClose }: RuleModalProps) {
               <span className="text-2xl shrink-0 mt-0.5">📝</span>
               <div>
                 <div className="font-bold text-gray-800">4. 立即測驗</div>
-                <div className="text-xs text-gray-500 mt-1 font-medium">學習結束後，馬上進行 30 題選擇題測驗（看英文選中文）。</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">學習結束後，馬上進行 15 題選擇題測驗（看英文選中文）。</div>
               </div>
             </div>
 
@@ -69,8 +69,8 @@ export default function RuleModal({ onClose }: RuleModalProps) {
             <div className="flex items-start space-x-3">
               <span className="text-2xl shrink-0 mt-0.5">🧠</span>
               <div>
-                <div className="font-bold text-gray-800">6. 延遲測驗</div>
-                <div className="text-xs text-gray-500 mt-1 font-medium">11 小時後開放。請務必在 <span className="text-[#FF9F8A] font-bold">14 小時內</span>完成，否則該回合數據作廢。</div>
+                <div className="font-bold text-gray-800">6. 延遲測驗 (關鍵)</div>
+                <div className="text-xs text-gray-500 mt-1 font-medium">11 小時後開放剩下的 15 題。請務必在 <span className="text-[#FF9F8A] font-bold">14 小時內</span>完成，否則當次測驗作廢。</div>
               </div>
             </div>
 

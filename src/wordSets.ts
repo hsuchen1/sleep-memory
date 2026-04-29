@@ -9,7 +9,7 @@ export const wordSets: Record<number, Word[]> = {
   1: [
     { word: "enervate", meaning: "使衰弱 / 使失去活力", pos: "v" },
     { word: "equanimity", meaning: "沉著 / 平靜", pos: "n" },
-    { word: "frenzy", meaning: "瘋開", pos: "n" },
+    { word: "frenzy", meaning: "瘋狂", pos: "n" },
     { word: "cosmopolitan", meaning: "世界性的 / 國際的", pos: "adj" },
     { word: "hagiography", meaning: "聖徒傳記 / 捧場傳記", pos: "n" },
     { word: "impervious", meaning: "不受影響的", pos: "adj" },

@@ -154,6 +154,20 @@ export default function App() {
   };
 
   useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (appState === 'learning' || appState === 'distractor' || appState === 'testing' || appState === 'survey') {
+        const msg = '您正在進行測驗，重新整理或離開頁面可能會導致資料遺失或測驗中斷，確定要離開嗎？';
+        e.preventDefault();
+        e.returnValue = msg;
+        return msg;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [appState]);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
         if (user) {

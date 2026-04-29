@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc, collection, query, where, getDocs, updateDoc, dele
 import { auth, db } from './firebase';
 import { AppState, UserProfile, TestRecord, TaskType } from './types';
 import { getWordSet } from './wordSets';
-import { handleFirestoreError, OperationType } from './utils';
+import { handleFirestoreError, OperationType, shuffleArray } from './utils';
 import { motion, AnimatePresence } from 'motion/react';
 
 import Landing from './components/Landing';
@@ -278,7 +278,7 @@ export default function App() {
   const handleDistractorComplete = () => {
     // Shuffle the 30 words and split into immediate and delayed lists
     const currentWords = userProfile ? getWordSet(userProfile.current_round) : [];
-    const shuffled = [...currentWords].sort(() => Math.random() - 0.5);
+    const shuffled = shuffleArray([...currentWords]);
     setImmediateTestWords(shuffled.slice(0, 15));
     setDelayedTestWords(shuffled.slice(15, 30));
     setAppState('testing');

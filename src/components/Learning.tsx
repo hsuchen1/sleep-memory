@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Word } from '../wordSets';
 import { auth } from '../firebase';
+import { shuffleArray } from '../utils';
 
 interface LearningProps {
   words: Word[];
@@ -11,6 +12,10 @@ interface LearningProps {
 
 export default function Learning({ words, initialTimeLeft, hasAnnouncement = false, onComplete }: LearningProps) {
   const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
+
+  const shuffledWords = useMemo(() => {
+    return shuffleArray(words);
+  }, [words]);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -46,7 +51,7 @@ export default function Learning({ words, initialTimeLeft, hasAnnouncement = fal
 
       <div className="flex-1 max-w-2xl w-full mx-auto py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {words.map((w, i) => (
+          {shuffledWords.map((w, i) => (
             <div key={i} className="p-8 bg-white border-4 border-[#E5E0FF] rounded-[3rem] shadow-xl flex flex-col items-center justify-center text-center space-y-3 hover:-translate-y-1 transition-transform duration-300">
               <div className="text-4xl font-bold text-gray-800">{w.word}</div>
               <div className="text-2xl text-gray-600 font-medium">{w.meaning} <span className="text-sm text-[#B5E2FA] font-bold">({w.pos})</span></div>

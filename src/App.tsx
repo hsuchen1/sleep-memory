@@ -6,6 +6,7 @@ import { AppState, UserProfile, TestRecord, TaskType } from './types';
 import { getWordSet } from './wordSets';
 import { handleFirestoreError, OperationType, shuffleArray } from './utils';
 import { motion, AnimatePresence } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 
 import Landing from './components/Landing';
 import Setup from './components/Setup';
@@ -524,6 +525,9 @@ export default function App() {
           }
         }}
       />
+      
+      {/* Vercel Analytics */}
+      <Analytics />
     </>
   );
 }
